@@ -4,28 +4,62 @@
     <meta charset="UTF-8">
     <title>ED Exobiology Advanced Species Planner</title>
     <style>
-        :root { --bg-dark: #111111; --panel-bg: #1c1c1c; --accent: #e67e22; --text-light: #e0e0e0; --success: #2ecc71; --border: #2d2d2d; }
-        body { font-family: 'Courier New', Courier, monospace; background-color: var(--bg-dark); color: var(--text-light); padding: 20px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 750px; background: var(--panel-bg); border: 1px solid var(--border); padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.7); }
-        h1 { text-align: center; color: var(--accent); font-size: 1.3rem; margin-top: 0; letter-spacing: 1px; }
-        fieldset { border: 1px solid var(--border); margin-bottom: 25px; padding: 15px; }
-        legend { color: var(--accent); font-weight: bold; padding: 0 10px; font-size: 0.95rem; }
-        .grid-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .input-group { display: flex; flex-direction: column; }
-        label { font-size: 0.85rem; margin-bottom: 5px; color: #999; }
-        input, select { background-color: #252525; border: 1px solid var(--border); color: #fff; padding: 8px; font-family: inherit; }
-        button { grid-column: span 2; background-color: var(--accent); color: white; border: none; padding: 12px; font-family: inherit; font-weight: bold; cursor: pointer; margin-top: 5px; font-size: 0.9rem; }
-        button:disabled { background-color: #3a3a3a; color: #777; cursor: not-allowed; }
-        .estimate-display { text-align: center; font-size: 1.1rem; font-weight: bold; color: var(--success); margin-top: 15px; }
-        .slot-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px dashed var(--border); padding-bottom: 8px; }
-        .slot-row label { color: var(--accent); font-weight: bold; }
-        .slot-row select { width: 65%; }
-        .console-box { background-color: #080808; border: 1px solid var(--border); padding: 15px; height: 260px; overflow-y: auto; font-size: 0.82rem; line-height: 1.5; color: #2ecc71; white-space: pre-wrap; font-weight: bold; }
-    </style>
+    :root { 
+        --bg-dark: #111111; 
+        --panel-bg: #1c1c1c; 
+        --accent: #e67e22; 
+        --text-light: #e0e0e0; 
+        --success: #2ecc71; 
+        --border: #2d2d2d; 
+    }
+    body { font-family: 'Courier New', Courier, monospace; background-color: var(--bg-dark); color: var(--text-light); padding: 20px; display: flex; justify-content: center; }
+    .container { width: 100%; max-width: 750px; background: var(--panel-bg); border: 1px solid var(--border); padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.7); }
+    h1 { text-align: center; color: var(--accent); font-size: 1.3rem; margin-top: 0; letter-spacing: 1px; }
+    fieldset { border: 1px solid var(--border); margin-bottom: 25px; padding: 15px; }
+    legend { color: var(--accent); font-weight: bold; padding: 0 10px; font-size: 0.95rem; }
+    
+    /* Input and Buttons */
+    .grid-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+    .input-group { display: flex; flex-direction: column; }
+    label { font-size: 0.85rem; margin-bottom: 5px; color: #999; }
+    input, select { background-color: #252525; border: 1px solid var(--border); color: #fff; padding: 8px; font-family: inherit; }
+    
+    button { grid-column: span 2; background-color: var(--accent); color: white; border: none; padding: 12px; font-family: inherit; font-weight: bold; cursor: pointer; margin-top: 5px; font-size: 0.9rem; }
+    button:disabled { background-color: #3a3a3a; color: #777; cursor: not-allowed; }
+    
+    /* Toggle Switch Styles */
+    .switch-wrapper { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; padding: 0 5px; }
+    .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 20px; }
+    .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: #fff; transition: .4s; border-radius: 50%; }
+    input:checked + .slider { background-color: var(--accent); }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    /* Reset Button */
+    .reset-btn { background-color: #333; border: 1px solid #c0392b; color: #ff6b6b; margin-top: 10px; width: 100%; padding: 8px; cursor: pointer; font-family: inherit; }
+    .reset-btn:hover { background-color: #c0392b; color: white; }
+
+    .estimate-display { text-align: center; font-size: 1.1rem; font-weight: bold; color: var(--success); margin-top: 15px; }
+    .slot-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px dashed var(--border); padding-bottom: 8px; }
+    .slot-row label { color: var(--accent); font-weight: bold; }
+    .slot-row select { width: 65%; }
+    .console-box { background-color: #080808; border: 1px solid var(--border); padding: 15px; height: 260px; overflow-y: auto; font-size: 0.82rem; line-height: 1.5; color: #2ecc71; white-space: pre-wrap; font-weight: bold; }
+</style>
 </head>
 <body>
 <div class="container">
     <h1>🚀 ELITE DANGEROUS: DEEP SPECIES PLANNER v2 🚀</h1>
+    
+    <button onclick="resetForm()" class="ui-button">RESET FORM</button>
+
+    <div class="switch-container">
+        <span>First Footfall:</span>
+        <label class="switch">
+            <input type="checkbox" id="first_footfall_toggle" onchange="updatePayoutDisplay()">
+            <span class="slider"></span>
+        </label>
+    </div>
     <fieldset>
         <legend> Phase 1: Scan Telemetry Criteria </legend>
         <div class="grid-inputs">
@@ -61,7 +95,14 @@
     <fieldset>
         <legend> Flight Operations & Terminal Output Logs </legend>
         <div class="console-box" id="output_box">Terminal core online... system status nominal. o7</div>
-    </fieldset>
+        </fieldset>
+
+    <fieldset>
+        <legend> Tactical Landing & Navigation Path </legend>
+        <div id="pathing_advice" style="font-family: 'Courier New', Courier, monospace; color: #f1c40f; padding: 10px; background: #000; border: 1px solid #333; white-space: pre-wrap;">
+        Awaiting survey data...
+        </div>
+</fieldset>
 </div>
 <script src="app.js"></script>
 </body>
