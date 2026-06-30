@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ED Exobiology Advanced Species Planner</title>
+    <style>
+        :root { --bg-dark: #111111; --panel-bg: #1c1c1c; --accent: #e67e22; --text-light: #e0e0e0; --success: #2ecc71; --border: #2d2d2d; }
+        body { font-family: 'Courier New', Courier, monospace; background-color: var(--bg-dark); color: var(--text-light); padding: 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 750px; background: var(--panel-bg); border: 1px solid var(--border); padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.7); }
+        h1 { text-align: center; color: var(--accent); font-size: 1.3rem; margin-top: 0; letter-spacing: 1px; }
+        fieldset { border: 1px solid var(--border); margin-bottom: 25px; padding: 15px; }
+        legend { color: var(--accent); font-weight: bold; padding: 0 10px; font-size: 0.95rem; }
+        .grid-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .input-group { display: flex; flex-direction: column; }
+        label { font-size: 0.85rem; margin-bottom: 5px; color: #999; }
+        input, select { background-color: #252525; border: 1px solid var(--border); color: #fff; padding: 8px; font-family: inherit; }
+        button { grid-column: span 2; background-color: var(--accent); color: white; border: none; padding: 12px; font-family: inherit; font-weight: bold; cursor: pointer; margin-top: 5px; font-size: 0.9rem; }
+        button:disabled { background-color: #3a3a3a; color: #777; cursor: not-allowed; }
+        .estimate-display { text-align: center; font-size: 1.1rem; font-weight: bold; color: var(--success); margin-top: 15px; }
+        .slot-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px dashed var(--border); padding-bottom: 8px; }
+        .slot-row label { color: var(--accent); font-weight: bold; }
+        .slot-row select { width: 65%; }
+        .console-box { background-color: #080808; border: 1px solid var(--border); padding: 15px; height: 260px; overflow-y: auto; font-size: 0.82rem; line-height: 1.5; color: #2ecc71; white-space: pre-wrap; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🚀 ELITE DANGEROUS: DEEP SPECIES PLANNER v2 🚀</h1>
+    <fieldset>
+        <legend> Phase 1: Scan Telemetry Criteria </legend>
+        <div class="grid-inputs">
+            <div class="input-group"><label>Biological Signals Count:</label><input type="number" id="signal_count" min="1" max="15" value="3"></div>
+            <div class="input-group"><label>Primary Atmosphere Type:</label><select id="atmos">
+                <option value="Methane">Methane</option>
+                <option value="Methane-rich">Methane-rich</option>
+                <option value="Argon">Argon</option>
+                <option value="Argon-rich">Argon-rich</option>
+                <option value="Carbon Dioxide" selected>Carbon Dioxide</option>
+                <option value="Carbon Dioxide-rich">Carbon Dioxide-rich</option>
+                <option value="Nitrogen">Nitrogen</option>
+                <option value="Neon">Neon</option>
+                <option value="Neon-rich">Neon-rich</option>
+                <option value="Oxygen">Oxygen</option>
+                <option value="Sulfur Dioxide">Sulfur Dioxide</option>
+                <option value="Ammonia">Ammonia</option>
+                <option value="Water">Water</option>
+                <option value="Water-rich">Water-rich</option>
+                <option value="Helium">Helium</option>
+            </select></div>
+            <div class="input-group"><label>Planetary Body Material:</label><select id="composition"><option value="Icy">Icy</option><option value="Rocky" selected>Rocky</option><option value="Metal">Metal Rich / HMC</option></select></div>
+            <div class="input-group"><label>Surface Gravity (G Force):</label><input type="number" id="gravity" step="0.01" value="0.12"></div>
+            <button type="button" onclick="calculateEstimate()">Initialize Environmental Matrix</button>
+        </div>
+        <div class="estimate-display" id="estimate_label">Awaiting Initial Scan Parameters...</div>
+    </fieldset>
+    <fieldset>
+        <legend> Phase 2: Mapped Genus Identification Data </legend>
+        <div id="dropdown_container"><p style="color: #555; font-size: 0.85rem; text-align: center;">Execute entry scan filters above to assign dynamic genus evaluation targets.</p></div>
+        <button type="button" id="calc_p2_btn" onclick="optimizeAndValue()" disabled style="width: 100%;">Cross-Reference Species Validation Profiles</button>
+    </fieldset>
+    <fieldset>
+        <legend> Flight Operations & Terminal Output Logs </legend>
+        <div class="console-box" id="output_box">Terminal core online... system status nominal. o7</div>
+    </fieldset>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
