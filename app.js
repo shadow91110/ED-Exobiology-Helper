@@ -150,10 +150,13 @@ function calculateEstimate() {
     label.textContent = "Matrix Online - Assign Detected Genus Slots";
     label.style.color = "var(--accent)";
 }
+// 1. UPDATE YOUR MAIN FUNCTION TO CALL THE NEW ENGINE
 function optimizeAndValue() {
     const logBox = document.getElementById("output_box");
     const label = document.getElementById("estimate_label");
-    logBox.textContent += `\n[Evaluating Field Identification Profiles...]\n`;
+    const isFirstFootfall = document.getElementById("first_footfall_toggle").checked;
+    
+    logBox.textContent = `[Evaluating Field Identification Profiles...]\n`;
 
     let selectedGenera = [];
     for (let i = 1; i <= signalCountTarget; i++) {
@@ -162,7 +165,6 @@ function optimizeAndValue() {
     }
 
     if (selectedGenera.length === 0) {
-        logBox.textContent += `[Warning] No target genera assigned to slots. Calculations halted.\n`;
         alert("Please assign at least one detected genus to a slot.");
         return;
     }
@@ -174,58 +176,134 @@ function optimizeAndValue() {
         const choices = filteredValidSpecies.filter(s => s.genus === gen);
         if (choices.length > 0) {
             choices.sort((a, b) => b.base_value - a.base_value);
-            const optimalSpecies = choices[0]; // Resolves index mapping issue safely
-            
+            const optimalSpecies = choices[0];
             overallTotalBaseValue += optimalSpecies.base_value;
             itemsToRoute.push(optimalSpecies);
-
             logBox.textContent += `Slot #${index+1} Resolved -> ${optimalSpecies.genus} ${optimalSpecies.species} | Area: ${optimalSpecies.terrain} | Value: ${optimalSpecies.base_value.toLocaleString()} CR\n`;
         }
     });
 
-    // --- VISUAL HEATMAP COMPILATION ENGINE ---
-    logBox.textContent += `\n[COMPILING FLIGHT ROUTING MATRIX...]`;
+    const multiplier = isFirstFootfall ? 5 : 1;
+    const finalPayout = overallTotalBaseValue * multiplier;
+    logBox.textContent += `\n[PAYOUT CALCULATION]\nTotal: ${finalPayout.toLocaleString()} CR\n`;
+    label.textContent = `Total Est: ${finalPayout.toLocaleString()} CR`;
+    label.style.color = "var(--success)"; // Or your desired success color
     
-    let visualOverlayGroups = {};
-    itemsToRoute.forEach(item => {
-        if (!visualOverlayGroups[item.dss_visual_zone]) {
-            visualOverlayGroups[item.dss_visual_zone] = [];
+    // This calls the pathing engine we built earlier
+    generateOptimizedPath(itemsToRoute); 
+}
+
+// 2. HELPER: Categorize Terrain
+function getTerrainZone(terrain) {
+    const flat = ["Flat Plains", "Lowlands", "Smooth Basins", "Plains", "Flat Fields", "Flat Basins", "Deserts", "Fields"];
+    const medium = ["Rocky Fields", "Slopes", "Badlands", "Hills", "Rocky Slopes", "Geothermal Vents", "Glaciers"];
+    const rough = ["Mountains", "Highlands", "Canyons", "Fissures", "Craters", "Geothermal Fields", "Deep Chasms"];
+
+    if (flat.includes(terrain)) return 0;
+    if (medium.includes(terrain)) return 1;
+    return 2; 
+}
+
+// 3. HELPER: Provide Tactical Advice
+function getTerrainAdvice(terrain) {
+    const adviceMap = {
+        "Mountains": "Check high-altitude rock formations. Look for clusters clinging to vertical cliff faces or tucked into the deep, shadowed pockets of craggy peaks.",
+        "Craters": "Survey the central 'uplift' spike in the middle of the crater or the transition zone where the smooth basin floor meets the steep interior rim.",
+        "Canyons": "Navigate the canyon floor, focusing on the interface between the bottom sediment and the lower vertical walls. Watch for light-catching textures.",
+        "Plains": "Look for low-contrast color shifts on the flat ground. These species often blend into the terrain texture; use your ship's scanner while in low-hover to spot them.",
+        "Hills": "Scan the gentle, upward-sloping sides. Avoid the peaks themselves; species here prefer the 'sheltered' middle elevation where wind erosion creates small gullies.",
+        "Rocky Fields": "Scan for small, distinctive silhouettes between larger boulders. Your scanner range will be restricted by terrain clutter; move slowly with the SRV.",
+        "Geothermal Vents": "Look for gas plumes on your HUD. High-yield clusters are usually found in the immediate, slightly cooler perimeter of the vent site.",
+        "Glaciers": "Focus on the spiderweb fissures and deep ice-cracks. These species tend to grow where the ice sheet has fractured, providing grip for root systems.",
+        "Badlands": "Carefully navigate the eroded, uneven ground. Prioritize the deep basins between ridges where moisture/sediment collects.",
+        "Deserts": "Search the dunes, but keep your eyes on the 'leeward' side of the ridges. Look for high-contrast color patterns that break the uniform sand texture."
+    };
+    return adviceMap[terrain] || "Perform a high-intensity surface sweep; no specialized terrain markers identified.";
+}
+
+// 4. THE LOGISTICS ENGINE: Chain Pathing
+function generateOptimizedPath(items) {
+    const adviceBox = document.getElementById("pathing_advice");
+    let zones = [[], [], []];
+    items.forEach(item => zones[getTerrainZone(item.terrain)].push(item));
+
+    let output = "🚀 SURFACE EXPLORATION CHAINING PROTOCOL:\n\n";
+
+    // Detect Boundary Landing Zones
+    for (let i = 0; i < 2; i++) {
+        if (zones[i].length > 0 && zones[i+1].length > 0) {
+            output += `>>> OPTIMAL LANDING ZONE: [${i === 0 ? 'PLAINS/FOOTHILLS' : 'FOOTHILLS/MOUNTAINS'}]\n`;
+            output += `    Strategy: Target the boundary line between biomes. This allows for a 'one-trip' collection cycle without orbital re-entry.\n\n`;
         }
-        visualOverlayGroups[item.dss_visual_zone].push({
-            name: `${item.genus} ${item.species}`,
-            dist: item.scan_dist,
-            micro: item.terrain
-        });
-    });
-
-    logBox.textContent += `\n=======================================================\n`;
-    logBox.textContent += `🛰️ ORBITAL DSS HEATMAP TARGET GUIDE (VISUAL DROPZONES):\n`;
-    logBox.textContent += `=======================================================\n`;
-
-    let dropZoneCounter = 1;
-    for (const [dssZone, speciesList] of Object.entries(visualOverlayGroups)) {
-        logBox.textContent += `🟢 VISUAL DSS ZONE #${dropZoneCounter} -> [${dssZone.toUpperCase()}]\n`;
-        logBox.textContent += `   Aim your glide path down toward these visual surface areas.\n`;
-        
-        speciesList.forEach(sp => {
-            logBox.textContent += `   👉 ${sp.name} [Requires ${sp.dist}m separation | Found in micro-terrain: ${sp.micro}]\n`;
-        });
-        logBox.textContent += `\n`;
-        dropZoneCounter++;
     }
 
-    // --- SEPARATED GAME PAYOUT CALCULATIONS ---
-    const totalFirstFootfallPayout = overallTotalBaseValue * 5;
+    output += "--- EXECUTION PATH (Descending) ---\n";
+    let step = 1;
+    for (let i = 2; i >= 0; i--) {
+        if (zones[i].length > 0) {
+            output += `${step}. [Zone: ${['PLAINS', 'FOOTHILLS', 'MOUNTAINS'][i]}]\n`;
+            
+            // Get unique terrains in this zone
+            const terrains = [...new Set(zones[i].map(item => item.terrain))];
+            terrains.forEach(t => {
+                output += `   - ${t.toUpperCase()}: ${zones[i].filter(s => s.terrain === t).map(s => s.genus).join(', ')}\n`;
+                output += `     Pilot Cue: ${getTerrainAdvice(t)}\n\n`;
+            });
+            
+            output += `   -> Transit: ${i > 0 ? 'Descending slope to next cluster.' : 'Mission complete.'}\n\n`;
+            step++;
+        }
+    }
 
-    logBox.textContent += `-------------------------------------------------------\n`;
-    logBox.textContent += `📊 ECONOMIC EXPLORATION REWARD ESTIMATES:\n`;
-    logBox.textContent += `-------------------------------------------------------\n`;
-    logBox.textContent += `Standard System (Total Base Value): ${overallTotalBaseValue.toLocaleString()} CR\n`;
-    logBox.textContent += `Pristine System (Total First Footfall): ${totalFirstFootfallPayout.toLocaleString()} CR\n`;
-    logBox.textContent += `=======================================================\n`;
+    // Update Text
+    adviceBox.textContent = output;
     
-    logBox.scrollTop = logBox.scrollHeight;
+    // Auto-scroll to top of advice box
+    adviceBox.scrollTop = 0;
+}
 
-    label.textContent = `Pristine Est: ${totalFirstFootfallPayout.toLocaleString()} CR`;
-    label.style.color = "var(--success)";
+function resetForm() {
+    // Clear all inputs
+    for (let i = 1; i <= signalCountTarget; i++) {
+        document.getElementById(`slot_genus_${i}`).value = "";
+    }
+    document.getElementById("first_footfall_toggle").checked = false;
+    document.getElementById("output_box").textContent = "System reset. Standing by for survey data...";
+    
+    // Reset display
+    updatePayoutDisplay();
+}
+
+// 2. IDLE STATE: MIN/MAX RANGE
+function calculatePayoutRange() {
+    const isFirstFootfall = document.getElementById("first_footfall_toggle").checked;
+    const mult = isFirstFootfall ? 5 : 1;
+
+    // Get the min and max possible values from your filteredValidSpecies list
+    const values = filteredValidSpecies.map(s => s.base_value);
+    const min = Math.min(...values) * mult;
+    const max = Math.max(...values) * mult;
+    
+    return `Est. Payout Range: ${min.toLocaleString()} - ${max.toLocaleString()} CR`;
+}
+
+// 3. CONTROLLER: Updates UI based on state
+function updatePayoutDisplay() {
+    const label = document.getElementById("estimate_label");
+    const selectedGenera = [];
+    
+    // Check if any genera are selected
+    for (let i = 1; i <= signalCountTarget; i++) {
+        const val = document.getElementById(`slot_genus_${i}`).value;
+        if (val) selectedGenera.push(val);
+    }
+
+    if (selectedGenera.length === 0) {
+        // No input: Show Range
+        label.textContent = calculatePayoutRange();
+        label.style.color = "#aaa"; // Neutral color
+    } else {
+        // Has input: Run actual calculation
+        optimizeAndValue();
+    }
 }
