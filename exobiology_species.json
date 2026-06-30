@@ -1,0 +1,1731 @@
+{
+  "metadata": {
+    "title": "Elite Dangerous Exobiology Species Database",
+    "purpose": "Reference data to identify exobiology species present on a planet and evaluate financial gain from sampling them.",
+    "sources": [
+      "https://elite-dangerous.fandom.com/wiki/ (genus pages listed by user)",
+      "https://elite-dangerous.fandom.com/wiki/Exobiology_Sample_Values_and_Details",
+      "https://canonn.science/codex/ (Canonn Research Group, cross-referenced for gravity/temperature/volcanism precision)"
+    ],
+    "field_notes": {
+      "value_credits": "Base Vista Genomics sale value in credits. 'First Logged' bonus on Vista Genomics multiplies this (commonly 4-5x) for the first sample of a species from a given body.",
+      "gravity": "Surface gravity range (in G) within which the species has been recorded; max_g is the effective spawn ceiling used for planning.",
+      "min_distance_between_genetic_samples_m": "Minimum colonial separation: the distance a commander must move between Genetic Sampler scans to register a second/third distinct sample of the same species.",
+      "temperature_k": "Recorded planetary mean surface temperature range (Kelvin) within which the species has been found. 'N/A'-type genera with very wide tolerance show the full recorded spread.",
+      "location": "Planetary body type(s) on which the species is regularly found (e.g. Rocky, High Metal Content, Icy, Rocky Ice)."
+    },
+    "species_count": 90
+  },
+  "species": [
+    {
+      "genus": "Recepta",
+      "species": "Conditivus",
+      "full_name": "Recepta Conditivus",
+      "value_credits": 14313700,
+      "atmosphere": "Sulphur Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.28
+      },
+      "volcanism": "Insignificant",
+      "description": "A Recepta species where the body of the organism is suspended above ground inside a sphere-shaped translucent membrane filled with chemical-rich fluid that protects the organism and provides the chemical soup needed for metabolism.",
+      "location": "Icy, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 132.0,
+        "max": 272.87
+      }
+    },
+    {
+      "genus": "Recepta",
+      "species": "Deltahedronix",
+      "full_name": "Recepta Deltahedronix",
+      "value_credits": 16202800,
+      "atmosphere": "Sulphur Dioxide, Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.28
+      },
+      "volcanism": "Low (tolerance, not preference)",
+      "description": "A Recepta species that produces a thick lattice of trunks in a deltahedron shape, growing around and above the globular central organism to capture, retain and focus geothermal heat for thermosynthesis.",
+      "location": "Rocky, High Metal Content",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 132.0,
+        "max": 271.78
+      }
+    },
+    {
+      "genus": "Recepta",
+      "species": "Umbrux",
+      "full_name": "Recepta Umbrux",
+      "value_credits": 12934900,
+      "atmosphere": "Sulphur Dioxide, Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.28
+      },
+      "volcanism": "Insignificant",
+      "description": "A Recepta species that grows a thick latticed structure for protection. A fine translucent membrane stretches between its gaps, allowing sunlight to penetrate and reach the inner organism for photosynthesis.",
+      "location": "Rocky, High Metal Content, Icy, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 132.0,
+        "max": 272.66
+      }
+    },
+    {
+      "genus": "Bacterium",
+      "species": "Acies",
+      "full_name": "Bacterium Acies",
+      "value_credits": 1000000,
+      "atmosphere": "Neon, Neon-Rich",
+      "gravity": {
+        "min_g": 0.26,
+        "max_g": 1.18
+      },
+      "volcanism": "Low (tolerance, not preference)",
+      "description": "A Bacterial species that converts energy from neon-based atmospheres, creating looping whirls of bright colour.",
+      "location": "Icy, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 20.0,
+        "max": 138.48
+      }
+    },
+    {
+      "genus": "Bacterium",
+      "species": "Alcyoneum",
+      "full_name": "Bacterium Alcyoneum",
+      "value_credits": 1658500,
+      "atmosphere": "Ammonia",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.38
+      },
+      "volcanism": "Insignificant",
+      "description": "A Bacterial species found in ammonia-based atmospheres that lives in sunlight; a colony's appearance resembles an intricate maze.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 57.61,
+        "max": 187.16
+      }
+    },
+    {
+      "genus": "Bacterium",
+      "species": "Aurasus",
+      "full_name": "Bacterium Aurasus",
+      "value_credits": 1000000,
+      "atmosphere": "Carbon Dioxide, Carbon Dioxide-Rich",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.61
+      },
+      "volcanism": "Insignificant",
+      "description": "These Bacteria thrive on sunlight in carbon dioxide atmospheres, causing blanket coloration across a planetary surface.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 115.22,
+        "max": 399.83
+      }
+    },
+    {
+      "genus": "Bacterium",
+      "species": "Bullaris",
+      "full_name": "Bacterium Bullaris",
+      "value_credits": 1152500,
+      "atmosphere": "Methane, Methane-Rich",
+      "gravity": {
+        "min_g": 0.02,
+        "max_g": 0.61
+      },
+      "volcanism": "Low (tolerance, not preference)",
+      "description": "This species of Bacteria thrives on atmospheric methane, appearing as a network of linked bubble patterns.",
+      "location": "High Metal Content, Icy, Rocky, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 50.49,
+        "max": 140.78
+      }
+    },
+    {
+      "genus": "Bacterium",
+      "species": "Cerbrus",
+      "full_name": "Bacterium Cerbrus",
+      "value_credits": 1689800,
+      "atmosphere": "Sulphur Dioxide, Water",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.61
+      },
+      "volcanism": "Low (tolerance, not preference)",
+      "description": "A sunlight-converting Bacterial species on worlds with atmospheres dominated by water and sulphur dioxide; colonies resemble a brain-shaped mass of smaller connected cells.",
+      "location": "High Metal Content, Rocky, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 132.0,
+        "max": 499.99
+      }
+    },
+    {
+      "genus": "Bacterium",
+      "species": "Informem",
+      "full_name": "Bacterium Informem",
+      "value_credits": 8418000,
+      "atmosphere": "Nitrogen",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.62
+      },
+      "volcanism": "Insignificant",
+      "description": "This species of Bacteria can be found in nitrogen atmospheres and forms a shapeless mass across the surface.",
+      "location": "High Metal Content, Icy, Rocky, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 42.76,
+        "max": 167.28
+      }
+    },
+    {
+      "genus": "Bacterium",
+      "species": "Nebulus",
+      "full_name": "Bacterium Nebulus",
+      "value_credits": 5289900,
+      "atmosphere": "Helium",
+      "gravity": {
+        "min_g": 0.39,
+        "max_g": 0.56
+      },
+      "volcanism": "Low (tolerance, not preference)",
+      "description": "This Bacterial species survives exclusively on atmospheric helium on icy bodies; distinguished by a radial pattern extending outward from the colony's centre.",
+      "location": "Icy",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 20.0,
+        "max": 20.79
+      }
+    },
+    {
+      "genus": "Bacterium",
+      "species": "Omentum",
+      "full_name": "Bacterium Omentum",
+      "value_credits": 4638900,
+      "atmosphere": "Argon, Helium, Methane, Neon",
+      "gravity": {
+        "min_g": 0.03,
+        "max_g": 0.6
+      },
+      "volcanism": "Nitrogen or Ammonia Minor Magma",
+      "description": "This species of Bacteria converts geothermal heat from nitrogen- or ammonia-based volcanic sites into energy, appearing as long interlinked strands across the surface.",
+      "location": "Icy",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 20.0,
+        "max": 317.8
+      }
+    },
+    {
+      "genus": "Bacterium",
+      "species": "Scopulum",
+      "full_name": "Bacterium Scopulum",
+      "value_credits": 4934500,
+      "atmosphere": "Argon, Helium, Methane, Neon",
+      "gravity": {
+        "min_g": 0.03,
+        "max_g": 0.61
+      },
+      "volcanism": "Carbon Dioxide Geysers or Minor Methane Magma",
+      "description": "This species of Bacteria thrives on the heat generated by carbon- or methane-based volcanic activity, appearing as long swirling ridges on the surface.",
+      "location": "Icy, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 20.0,
+        "max": 284.44
+      }
+    },
+    {
+      "genus": "Bacterium",
+      "species": "Tela",
+      "full_name": "Bacterium Tela",
+      "value_credits": 1949000,
+      "atmosphere": "Any",
+      "gravity": {
+        "min_g": 0.03,
+        "max_g": 0.61
+      },
+      "volcanism": "Minor Nitrogen/Methane magma; Water magma/geysers; Silicate/Water geysers",
+      "description": "This highly atmosphere-adaptive species of Bacteria appears as an intricate web pattern, thriving near most magma and geyser volcanic activity, but also found on bodies with no volcanism.",
+      "location": "High Metal Content, Icy, Rocky",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 20.0,
+        "max": 630.93
+      }
+    },
+    {
+      "genus": "Bacterium",
+      "species": "Verrata",
+      "full_name": "Bacterium Verrata",
+      "value_credits": 3897000,
+      "atmosphere": "Ammonia, Argon, Helium, Neon",
+      "gravity": {
+        "min_g": 0.03,
+        "max_g": 0.61
+      },
+      "volcanism": "Water Magma and Geysers (Major/Minor)",
+      "description": "This species of Bacteria appears as an intricate web pattern, showing a preference for exclusively water-based volcanic activity.",
+      "location": "Icy, Rocky, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 20.0,
+        "max": 630.93
+      }
+    },
+    {
+      "genus": "Bacterium",
+      "species": "Vesicula",
+      "full_name": "Bacterium Vesicula",
+      "value_credits": 1000000,
+      "atmosphere": "Argon",
+      "gravity": {
+        "min_g": 0.03,
+        "max_g": 0.51
+      },
+      "volcanism": "Low (tolerance, not preference)",
+      "description": "This species of Bacteria survives on worlds with argon atmospheres and appears as a collection of tight loops on the ground.",
+      "location": "High Metal Content, Icy, Rocky, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 45.18,
+        "max": 266.21
+      }
+    },
+    {
+      "genus": "Bacterium",
+      "species": "Volu",
+      "full_name": "Bacterium Volu",
+      "value_credits": 7774700,
+      "atmosphere": "Oxygen",
+      "gravity": {
+        "min_g": 0.05,
+        "max_g": 0.6
+      },
+      "volcanism": "Insignificant",
+      "description": "This species of Bacteria is dependent upon oxygen atmospheres and creates random swirling patterns across the ground.",
+      "location": "High Metal Content, Icy, Rocky, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 143.8,
+        "max": 245.82
+      }
+    },
+    {
+      "genus": "Fonticulua",
+      "species": "Campestris",
+      "full_name": "Fonticulua Campestris",
+      "value_credits": 1000000,
+      "atmosphere": "Argon",
+      "gravity": {
+        "min_g": 0.03,
+        "max_g": 0.28
+      },
+      "volcanism": "Low (tolerance, not preference)",
+      "description": "These Fonticulua thrive in argon atmospheres and can reach four metres in height, featuring huge leaf-like structures to capture sunlight for conversion to energy.",
+      "location": "Ice, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 50.0,
+        "max": 158.73
+      }
+    },
+    {
+      "genus": "Fonticulua",
+      "species": "Digitos",
+      "full_name": "Fonticulua Digitos",
+      "value_credits": 1804100,
+      "atmosphere": "Methane",
+      "gravity": {
+        "min_g": 0.03,
+        "max_g": 0.06
+      },
+      "volcanism": "Low (tolerance, not preference)",
+      "description": "A Fonticulua species that thrives in methane-based atmospheres, sprouting a cluster of cylindrical tubes directly from the ice.",
+      "location": "Ice, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 82.71,
+        "max": 108.6
+      }
+    },
+    {
+      "genus": "Fonticulua",
+      "species": "Fluctus",
+      "full_name": "Fonticulua Fluctus",
+      "value_credits": 20000000,
+      "atmosphere": "Oxygen",
+      "gravity": {
+        "min_g": 0.24,
+        "max_g": 0.27
+      },
+      "volcanism": "Insignificant",
+      "description": "A species of Fonticulua that exists on worlds with oxygen atmospheres, producing coiling wave-shaped structures which tilt toward sunlight.",
+      "location": "Ice",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 143.8,
+        "max": 199.44
+      }
+    },
+    {
+      "genus": "Fonticulua",
+      "species": "Lapida",
+      "full_name": "Fonticulua Lapida",
+      "value_credits": 3111000,
+      "atmosphere": "Nitrogen",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.62
+      },
+      "volcanism": "Insignificant",
+      "description": "A Fonticulua species that exists in atmospheres with a heavy concentration of nitrogen. Bright gem-like pods grow along the main stalk and can break off to create new colonies.",
+      "location": "Ice, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 50.0,
+        "max": 89.5
+      }
+    },
+    {
+      "genus": "Fonticulua",
+      "species": "Segmentatus",
+      "full_name": "Fonticulua Segmentatus",
+      "value_credits": 19010800,
+      "atmosphere": "Neon, Neon-Rich",
+      "gravity": {
+        "min_g": 0.25,
+        "max_g": 0.28
+      },
+      "volcanism": "Insignificant",
+      "description": "A species of Fonticulua found in atmospheres dominated by neon, appearing as a pyramid-shaped cluster of frilled sections.",
+      "location": "Ice",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 50.23,
+        "max": 74.67
+      }
+    },
+    {
+      "genus": "Fonticulua",
+      "species": "Upupam",
+      "full_name": "Fonticulua Upupam",
+      "value_credits": 5727600,
+      "atmosphere": "Argon-Rich",
+      "gravity": {
+        "min_g": 0.21,
+        "max_g": 0.28
+      },
+      "volcanism": "Insignificant",
+      "description": "This Fonticulua species can be found on ice worlds with argon-rich atmospheres, producing broad hoop-shaped structures to better reflect weak sunlight onto themselves for photosynthesis.",
+      "location": "Ice, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 60.76,
+        "max": 123.13
+      }
+    },
+    {
+      "genus": "Frutexa",
+      "species": "Acus",
+      "full_name": "Frutexa Acus",
+      "value_credits": 7774700,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.24
+      },
+      "volcanism": "Insignificant",
+      "description": "This Frutexa species has vivid colouration when young that alters as it matures; its upper branches produce lines of small pea-like seed pods.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 56.47,
+        "max": 196.74
+      }
+    },
+    {
+      "genus": "Frutexa",
+      "species": "Collum",
+      "full_name": "Frutexa Collum",
+      "value_credits": 1639800,
+      "atmosphere": "Sulphur Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.28
+      },
+      "volcanism": "Insignificant",
+      "description": "A species of Frutexa characterised by its spiky lower branches surrounding a thick central column, which is clotted with spores and has a dark crown.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 132.0,
+        "max": 210.31
+      }
+    },
+    {
+      "genus": "Frutexa",
+      "species": "Fera",
+      "full_name": "Frutexa Fera",
+      "value_credits": 1632500,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.24
+      },
+      "volcanism": "Insignificant",
+      "description": "This species of Frutexa combines broad branches with long thin stalks, along which grow clusters of lightweight seed pods that are scattered by light winds.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 146.0,
+        "max": 195.38
+      }
+    },
+    {
+      "genus": "Frutexa",
+      "species": "Flabellum",
+      "full_name": "Frutexa Flabellum",
+      "value_credits": 1808900,
+      "atmosphere": "Ammonia",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.28
+      },
+      "volcanism": "Insignificant",
+      "description": "A species of Frutexa that appears as a bush of leaves with a texture similar to seaweed; seeds are extended on long stalks protected by a cage formation until ready to germinate.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 152.0,
+        "max": 194.95
+      }
+    },
+    {
+      "genus": "Frutexa",
+      "species": "Flammasis",
+      "full_name": "Frutexa Flammasis",
+      "value_credits": 10326000,
+      "atmosphere": "Ammonia",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "Insignificant",
+      "description": "A Frutexa species that gives the appearance of flames, with vivid upright fronds extended from multiple stalks dotted with disc-shaped spores distributed by the wind.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 152.15,
+        "max": 176.66
+      }
+    },
+    {
+      "genus": "Frutexa",
+      "species": "Metallicum",
+      "full_name": "Frutexa Metallicum",
+      "value_credits": 1632500,
+      "atmosphere": "Ammonia, Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.28
+      },
+      "volcanism": "No Volcanism",
+      "description": "This species of Frutexa has an almost metallic shine to its small leaves; spherical spores with star-shaped openings grow along its upper branches.",
+      "location": "High Metal Content",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 100.11,
+        "max": 399.9
+      }
+    },
+    {
+      "genus": "Frutexa",
+      "species": "Sponsae",
+      "full_name": "Frutexa Sponsae",
+      "value_credits": 5988000,
+      "atmosphere": "Water",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.06
+      },
+      "volcanism": "Insignificant",
+      "description": "A Frutexa species that produces clusters of upright intertwining branches crowned with bright seed sacks.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 392.62,
+        "max": 451.95
+      }
+    },
+    {
+      "genus": "Stratum",
+      "species": "Araneamus",
+      "full_name": "Stratum Araneamus",
+      "value_credits": 2448900,
+      "atmosphere": "Sulphur Dioxide",
+      "gravity": {
+        "min_g": 0.26,
+        "max_g": 0.57
+      },
+      "volcanism": "Low (tolerance, not preference)",
+      "description": "A Stratum species with a vaguely octopoid shape; pale semi-translucent upper domes reveal colourful inner organisms contrasting with darker outstretched tentacles.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 165.01,
+        "max": 372.92
+      }
+    },
+    {
+      "genus": "Stratum",
+      "species": "Cucumisis",
+      "full_name": "Stratum Cucumisis",
+      "value_credits": 16202800,
+      "atmosphere": "Carbon Dioxide, Sulphur Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.59
+      },
+      "volcanism": "Low (tolerance, not preference)",
+      "description": "A Stratum species that displays fleshy ovoid shapes connected in a narrow pattern across the ground, covered with streaks of round photosynthetic cells that absorb sunlight.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 174.78,
+        "max": 372.97
+      }
+    },
+    {
+      "genus": "Stratum",
+      "species": "Excutitus",
+      "full_name": "Stratum Excutitus",
+      "value_credits": 2448900,
+      "atmosphere": "Carbon Dioxide, Sulphur Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.49
+      },
+      "volcanism": "Insignificant",
+      "description": "This Stratum species appears as a mixture of tight concentric ring patterns and mottled proto-leaves in a mixture of dark hues.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 165.0,
+        "max": 190.0
+      }
+    },
+    {
+      "genus": "Stratum",
+      "species": "Frigus",
+      "full_name": "Stratum Frigus",
+      "value_credits": 2637500,
+      "atmosphere": "Carbon Dioxide, Sulphur Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.55
+      },
+      "volcanism": "Insignificant",
+      "description": "This species of Stratum forms broad interconnected ring structures composed of narrow ridges to capture sunlight.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 191.01,
+        "max": 371.32
+      }
+    },
+    {
+      "genus": "Stratum",
+      "species": "Laminamus",
+      "full_name": "Stratum Laminamus",
+      "value_credits": 2788300,
+      "atmosphere": "Ammonia",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.34
+      },
+      "volcanism": "Insignificant",
+      "description": "This particular Stratum species gives the appearance of overlapping rock plateaus, each with narrow bands of colouration.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 57.61,
+        "max": 176.66
+      }
+    },
+    {
+      "genus": "Stratum",
+      "species": "Limaxus",
+      "full_name": "Stratum Limaxus",
+      "value_credits": 1362000,
+      "atmosphere": "Carbon Dioxide, Sulphur Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.48
+      },
+      "volcanism": "Insignificant",
+      "description": "This species of Stratum appears as a series of unconnected ovoid shapes across the ground, the protruding tips of a larger subterranean organism.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 165.0,
+        "max": 190.0
+      }
+    },
+    {
+      "genus": "Stratum",
+      "species": "Paleas",
+      "full_name": "Stratum Paleas",
+      "value_credits": 1362000,
+      "atmosphere": "Ammonia, Carbon Dioxide, Water",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.6
+      },
+      "volcanism": "Insignificant",
+      "description": "A Stratum that blends thick overlapping vines with irregular growths, with varying colours appearing in bands or streaks.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 158.67,
+        "max": 449.99
+      }
+    },
+    {
+      "genus": "Stratum",
+      "species": "Tectonicas",
+      "full_name": "Stratum Tectonicas",
+      "value_credits": 19010800,
+      "atmosphere": "Ammonia, Carbon Dioxide, Sulphur Dioxide, Water",
+      "gravity": {
+        "min_g": 0.05,
+        "max_g": 0.61
+      },
+      "volcanism": "Insignificant",
+      "description": "A Stratum species with a thick rock-like outer shell, covered with an irregular lattice of brighter cells that absorb sunlight for photosynthesis.",
+      "location": "High Metal Content",
+      "min_distance_between_genetic_samples_m": 500,
+      "temperature_k": {
+        "min": 61.48,
+        "max": 449.85
+      }
+    },
+    {
+      "genus": "Tussock",
+      "species": "Albata",
+      "full_name": "Tussock Albata",
+      "value_credits": 3252500,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "No Volcanism",
+      "description": "A Tussock species characterised by leaves with a distinctive striped pattern that are bisected like a snake's tongue; mature versions sprout smaller spore-producing leaves.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 200,
+      "temperature_k": {
+        "min": 172.71,
+        "max": 180.0
+      }
+    },
+    {
+      "genus": "Tussock",
+      "species": "Capillum",
+      "full_name": "Tussock Capillum",
+      "value_credits": 7025800,
+      "atmosphere": "Argon, Methane",
+      "gravity": {
+        "min_g": 0.03,
+        "max_g": 0.28
+      },
+      "volcanism": "Low (tolerance, not preference)",
+      "description": "This Tussock species is a squat cluster of leaves resembling thick matted hair, from which sprout thick pods carrying a number of round beans.",
+      "location": "Rocky, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 200,
+      "temperature_k": {
+        "min": 80.0,
+        "max": 128.86
+      }
+    },
+    {
+      "genus": "Tussock",
+      "species": "Caputus",
+      "full_name": "Tussock Caputus",
+      "value_credits": 3472400,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "No Volcanism",
+      "description": "A Tussock species with leaves that have a thick segmented lower half and a willowy upper half; mature versions produce separate spore-clotted ovoid organisms on stalks.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 200,
+      "temperature_k": {
+        "min": 158.67,
+        "max": 190.0
+      }
+    },
+    {
+      "genus": "Tussock",
+      "species": "Catena",
+      "full_name": "Tussock Catena",
+      "value_credits": 1766600,
+      "atmosphere": "Ammonia",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.28
+      },
+      "volcanism": "Insignificant",
+      "description": "This species of Tussock has very thin stalks carrying twin sets of seed sacks along their entire length, resembling links on a chain.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 200,
+      "temperature_k": {
+        "min": 152.0,
+        "max": 176.67
+      }
+    },
+    {
+      "genus": "Tussock",
+      "species": "Cultro",
+      "full_name": "Tussock Cultro",
+      "value_credits": 1766600,
+      "atmosphere": "Ammonia",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.28
+      },
+      "volcanism": "Insignificant",
+      "description": "A Tussock species with tall sharp reeds reaching about two metres, characterised by narrow markings along their length.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 200,
+      "temperature_k": {
+        "min": 57.61,
+        "max": 187.16
+      }
+    },
+    {
+      "genus": "Tussock",
+      "species": "Divisa",
+      "full_name": "Tussock Divisa",
+      "value_credits": 1766600,
+      "atmosphere": "Ammonia",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.28
+      },
+      "volcanism": "Insignificant",
+      "description": "This Tussock species blends thick segmented lower growths with longer, narrower leaves; mature versions have pale spores along the upper branches.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 200,
+      "temperature_k": {
+        "min": 152.16,
+        "max": 176.51
+      }
+    },
+    {
+      "genus": "Tussock",
+      "species": "Ignis",
+      "full_name": "Tussock Ignis",
+      "value_credits": 1849000,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.2
+      },
+      "volcanism": "No Volcanism",
+      "description": "This Tussock species produces thick intertwined leaves, above which sprout narrow stems crowned with seed pods.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 200,
+      "temperature_k": {
+        "min": 150.96,
+        "max": 187.16
+      }
+    },
+    {
+      "genus": "Tussock",
+      "species": "Pennata",
+      "full_name": "Tussock Pennata",
+      "value_credits": 5853800,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.17
+      },
+      "volcanism": "No Volcanism",
+      "description": "A Tussock species that extends large seed pods on thin stems above a cluster of bright leaves.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 200,
+      "temperature_k": {
+        "min": 145.72,
+        "max": 154.0
+      }
+    },
+    {
+      "genus": "Tussock",
+      "species": "Pennatis",
+      "full_name": "Tussock Pennatis",
+      "value_credits": 1000000,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "None",
+      "description": "A Tussock species with feather-shaped growths surrounding a single segmented stem, which when mature is crowned with colourful seeds.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 200,
+      "temperature_k": {
+        "min": 146.61,
+        "max": 195.4
+      }
+    },
+    {
+      "genus": "Tussock",
+      "species": "Propagito",
+      "full_name": "Tussock Propagito",
+      "value_credits": 1000000,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "No Volcanism",
+      "description": "A Tussock species that sprouts tapering leaves, with tips covered with colourful seed pods.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 200,
+      "temperature_k": {
+        "min": 145.59,
+        "max": 196.25
+      }
+    },
+    {
+      "genus": "Tussock",
+      "species": "Serrati",
+      "full_name": "Tussock Serrati",
+      "value_credits": 4447100,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.23
+      },
+      "volcanism": "No Volcanism",
+      "description": "This Tussock species sprouts serrated leaves around thick stalks that produce dark seed pods.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 200,
+      "temperature_k": {
+        "min": 171.0,
+        "max": 174.0
+      }
+    },
+    {
+      "genus": "Tussock",
+      "species": "Stigmasis",
+      "full_name": "Tussock Stigmasis",
+      "value_credits": 19010800,
+      "atmosphere": "Sulphur Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.28
+      },
+      "volcanism": "Insignificant",
+      "description": "This Tussock species resembles a patch of tough, wiry grasses; taller stalks carrying disc-shaped seed pods rise above the main organism when mature.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 200,
+      "temperature_k": {
+        "min": 132.0,
+        "max": 206.64
+      }
+    },
+    {
+      "genus": "Tussock",
+      "species": "Triticum",
+      "full_name": "Tussock Triticum",
+      "value_credits": 7774700,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "No Volcanism",
+      "description": "A Tussock species with thin tough leaves marked with dark stripes, from which sprout taller stalks with small leaves that release seeds to the winds.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 200,
+      "temperature_k": {
+        "min": 191.0,
+        "max": 196.74
+      }
+    },
+    {
+      "genus": "Tussock",
+      "species": "Ventusa",
+      "full_name": "Tussock Ventusa",
+      "value_credits": 3227700,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.16
+      },
+      "volcanism": "Insignificant",
+      "description": "A Tussock species that blends tough lower stalks with taller willowy reeds, which produce small pale spores.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 200,
+      "temperature_k": {
+        "min": 56.47,
+        "max": 187.16
+      }
+    },
+    {
+      "genus": "Tussock",
+      "species": "Virgam",
+      "full_name": "Tussock Virgam",
+      "value_credits": 14313700,
+      "atmosphere": "Water",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.06
+      },
+      "volcanism": "Insignificant",
+      "description": "A Tussock species with thin reeds clustered around a central stalk, which is eventually crowned with spores.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 200,
+      "temperature_k": {
+        "min": 390.07,
+        "max": 449.99
+      }
+    },
+    {
+      "genus": "Fungoida",
+      "species": "Bullarum",
+      "full_name": "Fungoida Bullarum",
+      "value_credits": 3703200,
+      "atmosphere": "Argon, Argon-Rich",
+      "gravity": {
+        "min_g": 0.06,
+        "max_g": 0.28
+      },
+      "volcanism": "No Volcanism",
+      "description": "A Fungoida that features clusters of mottled bubble-shaped growths atop a central stalk, containing spores that can be exposed to the wind for distribution.",
+      "location": "Rocky Ice",
+      "min_distance_between_genetic_samples_m": 300,
+      "temperature_k": {
+        "min": 50.01,
+        "max": 132.83
+      }
+    },
+    {
+      "genus": "Fungoida",
+      "species": "Gelata",
+      "full_name": "Fungoida Gelata",
+      "value_credits": 3330300,
+      "atmosphere": "Carbon Dioxide, Water",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "Insignificant",
+      "description": "This Fungoida species resembles an upturned jellyfish, emerging from a solid base buried within the substrate; fleshy reproductive tissue can float on the breeze to form new organisms.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 300,
+      "temperature_k": {
+        "min": 77.88,
+        "max": 452.01
+      }
+    },
+    {
+      "genus": "Fungoida",
+      "species": "Setisis",
+      "full_name": "Fungoida Setisis",
+      "value_credits": 1670100,
+      "atmosphere": "Ammonia, Methane",
+      "gravity": {
+        "min_g": 0.03,
+        "max_g": 0.28
+      },
+      "volcanism": "Insignificant",
+      "description": "This Fungoida species produces vertical clusters interspersed with spore pods atop thin stalks, allowing them to break off and scatter to reproduce elsewhere.",
+      "location": "High Metal Content, Rocky, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 300,
+      "temperature_k": {
+        "min": 67.37,
+        "max": 187.16
+      }
+    },
+    {
+      "genus": "Fungoida",
+      "species": "Stabitis",
+      "full_name": "Fungoida Stabitis",
+      "value_credits": 2680300,
+      "atmosphere": "Carbon Dioxide, Water",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "Insignificant",
+      "description": "This Fungoida species produces vertical clusters interspersed with spore pods atop thin stalks, allowing them to break off and scatter to reproduce elsewhere.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 300,
+      "temperature_k": {
+        "min": 64.66,
+        "max": 451.61
+      }
+    },
+    {
+      "genus": "Osseus",
+      "species": "Cornibus",
+      "full_name": "Osseus Cornibus",
+      "value_credits": 1483000,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "No Volcanism",
+      "description": "An Osseus species that produces a stacked series of spiral structures up to about three metres in height; ridged features are upturned to better absorb sunlight for photosynthesis.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 800,
+      "temperature_k": {
+        "min": 180.0,
+        "max": 195.39
+      }
+    },
+    {
+      "genus": "Osseus",
+      "species": "Discus",
+      "full_name": "Osseus Discus",
+      "value_credits": 12934900,
+      "atmosphere": "Water, Ammonia, Methane",
+      "gravity": {
+        "min_g": 0.03,
+        "max_g": 0.27
+      },
+      "volcanism": "Low (tolerance, not preference)",
+      "description": "An Osseus species that appears as half-buried discs with radial patterns, resembling natural rock formations from a distance; absorbs geothermal energy from below and heat sources above.",
+      "location": "High Metal Content, Rocky, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 800,
+      "temperature_k": {
+        "min": 68.92,
+        "max": 451.84
+      }
+    },
+    {
+      "genus": "Osseus",
+      "species": "Fractus",
+      "full_name": "Osseus Fractus",
+      "value_credits": 4027800,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "No Volcanism",
+      "description": "This Osseus species can grow to over six metres across, producing wide ridged frills for metabolic interactions including absorbing sunlight for energy production.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 800,
+      "temperature_k": {
+        "min": 158.67,
+        "max": 190.0
+      }
+    },
+    {
+      "genus": "Osseus",
+      "species": "Pellebantus",
+      "full_name": "Osseus Pellebantus",
+      "value_credits": 9739000,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "No Volcanism",
+      "description": "A species of Osseus with a single broad stalk from which extend wide circular structures, with the largest plate capping the top to maximise sunlight absorption.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 800,
+      "temperature_k": {
+        "min": 191.0,
+        "max": 196.74
+      }
+    },
+    {
+      "genus": "Osseus",
+      "species": "Pumice",
+      "full_name": "Osseus Pumice",
+      "value_credits": 3156300,
+      "atmosphere": "Argon, Methane, Nitrogen",
+      "gravity": {
+        "min_g": 0.03,
+        "max_g": 0.28
+      },
+      "volcanism": "Low (tolerance, not preference)",
+      "description": "An Osseus species that grows a single thick stalk from which emerges a wide, broadly circular, pitted endoskeleton designed to dramatically increase surface area for chemosynthesis.",
+      "location": "High Metal Content, Rocky, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 800,
+      "temperature_k": {
+        "min": 42.76,
+        "max": 133.08
+      }
+    },
+    {
+      "genus": "Osseus",
+      "species": "Spiralis",
+      "full_name": "Osseus Spiralis",
+      "value_credits": 2404700,
+      "atmosphere": "Ammonia",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.28
+      },
+      "volcanism": "Insignificant",
+      "description": "A species of Osseus that produces coiling spiral structures up to six metres wide, with ridged folds on their upturned surfaces designed to capture sunlight.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 800,
+      "temperature_k": {
+        "min": 160.0,
+        "max": 191.89
+      }
+    },
+    {
+      "genus": "Aleoida",
+      "species": "Arcus",
+      "full_name": "Aleoida Arcus",
+      "value_credits": 7252500,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "None",
+      "description": "This Aleoida species has upright clumps of long serrated leaves, which can open up to expose a reproductive organ containing tiny round seeds.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 175.0,
+        "max": 180.0
+      }
+    },
+    {
+      "genus": "Aleoida",
+      "species": "Coronamus",
+      "full_name": "Aleoida Coronamus",
+      "value_credits": 6284600,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "None",
+      "description": "This Aleoida species has an interleaved crown of mottled leaves that can grow to head height, with explosive seed pods emerging on long protruding stalks.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 179.44,
+        "max": 190.0
+      }
+    },
+    {
+      "genus": "Aleoida",
+      "species": "Gravis",
+      "full_name": "Aleoida Gravis",
+      "value_credits": 12934900,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "None",
+      "description": "This Aleoida species has wide flat leaves on a heavy bark base and can reach huge sizes, sprouting a dome-shaped reproductive organ at its peak.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 190.0,
+        "max": 196.25
+      }
+    },
+    {
+      "genus": "Aleoida",
+      "species": "Laminiae",
+      "full_name": "Aleoida Laminiae",
+      "value_credits": 3385200,
+      "atmosphere": "Ammonia",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.28
+      },
+      "volcanism": "Insignificant",
+      "description": "This Aleoida species has a circle of upturned leaves marked with patterns, surrounding a bright fleshy pod with darker markings which matures in its centre.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 152.0,
+        "max": 176.66
+      }
+    },
+    {
+      "genus": "Aleoida",
+      "species": "Spica",
+      "full_name": "Aleoida Spica",
+      "value_credits": 3385200,
+      "atmosphere": "Ammonia",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.28
+      },
+      "volcanism": "Insignificant",
+      "description": "This Aleoida species features long spiky leaves that can reach over two metres high surrounding a single reproductive organ on a long central stalk.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 170.0,
+        "max": 176.56
+      }
+    },
+    {
+      "genus": "Fumerola",
+      "species": "Aquatis",
+      "full_name": "Fumerola Aquatis",
+      "value_credits": 6284600,
+      "atmosphere": "Ammonia, Argon, Nitrogen, Oxygen, Sulphur Dioxide, Water",
+      "gravity": {
+        "min_g": 0.03,
+        "max_g": 0.27
+      },
+      "volcanism": "Major/Minor Water Geysers, Major/Minor Water Magma",
+      "description": "A species of Fumerola found near sites of water-based volcanic activity, appearing as small dark clusters with ridged folds that trap heat within.",
+      "location": "Icy, Rocky, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 100,
+      "temperature_k": {
+        "min": 20.01,
+        "max": 451.19
+      }
+    },
+    {
+      "genus": "Fumerola",
+      "species": "Carbosis",
+      "full_name": "Fumerola Carbosis",
+      "value_credits": 6284600,
+      "atmosphere": "Argon, Methane, Nitrogen, Sulphur Dioxide",
+      "gravity": {
+        "min_g": 0.03,
+        "max_g": 0.27
+      },
+      "volcanism": "Minor Carbon Dioxide Geysers, Minor Methane Magma",
+      "description": "A Fumerola species found near sites of carbon-based volcanism, appearing as a thin upright tube; an inner organism protrudes from an opening at its peak to increase heat absorption.",
+      "location": "Icy",
+      "min_distance_between_genetic_samples_m": 100,
+      "temperature_k": {
+        "min": 20.01,
+        "max": 271.27
+      }
+    },
+    {
+      "genus": "Fumerola",
+      "species": "Extremus",
+      "full_name": "Fumerola Extremus",
+      "value_credits": 16202800,
+      "atmosphere": "Ammonia, Argon, Methane, Sulphur Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "Major/Minor Silicate Vapour Geysers; Major/Minor Rocky or Metallic Magma",
+      "description": "This Fumerola species has a preference for particulate-based volcanism types, appearing as long vertical stalks with smaller fronds that can stretch out.",
+      "location": "High Metal Content, Rocky, Rocky Ice",
+      "min_distance_between_genetic_samples_m": 100,
+      "temperature_k": {
+        "min": 54.35,
+        "max": 203.05
+      }
+    },
+    {
+      "genus": "Fumerola",
+      "species": "Nitris",
+      "full_name": "Fumerola Nitris",
+      "value_credits": 7500900,
+      "atmosphere": "Argon, Methane",
+      "gravity": {
+        "min_g": 0.03,
+        "max_g": 0.27
+      },
+      "volcanism": "Minor Ammonia or Nitrogen Magma",
+      "description": "This species of Fumerola prefers nitrogen-based volcanism, producing an ovoid organism with dotted markings that sits on top of a thin stalk.",
+      "location": "Icy",
+      "min_distance_between_genetic_samples_m": 100,
+      "temperature_k": {
+        "min": 39.48,
+        "max": 248.14
+      }
+    },
+    {
+      "genus": "Electricae",
+      "species": "Pluma",
+      "full_name": "Electricae Pluma",
+      "value_credits": 6284600,
+      "atmosphere": "Argon, Neon",
+      "gravity": {
+        "min_g": 0.03,
+        "max_g": 0.28
+      },
+      "volcanism": "Low (tolerance, not preference)",
+      "description": "A species of Electricae that extends a tip of four connected loops above the ice, each covered with brightly luminous fronds; most typically found near Stellar Classes A, White Dwarf, or Neutron.",
+      "location": "Ice",
+      "min_distance_between_genetic_samples_m": 1000,
+      "temperature_k": {
+        "min": 20.01,
+        "max": 149.67
+      }
+    },
+    {
+      "genus": "Electricae",
+      "species": "Radialem",
+      "full_name": "Electricae Radialem",
+      "value_credits": 6284600,
+      "atmosphere": "Argon",
+      "gravity": {
+        "min_g": 0.03,
+        "max_g": 0.27
+      },
+      "volcanism": "Low (tolerance, not preference)",
+      "description": "This Electricae species protrudes bioluminescent stalks that radiate out in all directions; evidence links this species to the proximity of nebulae.",
+      "location": "Ice",
+      "min_distance_between_genetic_samples_m": 1000,
+      "temperature_k": {
+        "min": 29.72,
+        "max": 149.24
+      }
+    },
+    {
+      "genus": "Concha",
+      "species": "Aureolas",
+      "full_name": "Concha Aureolas",
+      "value_credits": 7774700,
+      "atmosphere": "Ammonia",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "Insignificant",
+      "description": "These Concha are found on worlds with nitrogen-based atmospheres; their rounded rock-like structure splits apart to extend long stalks topped with loops.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 152.16,
+        "max": 176.67
+      }
+    },
+    {
+      "genus": "Concha",
+      "species": "Biconcavis",
+      "full_name": "Concha Biconcavis",
+      "value_credits": 19010800,
+      "atmosphere": "Nitrogen",
+      "gravity": {
+        "min_g": 0.05,
+        "max_g": 0.27
+      },
+      "volcanism": "None",
+      "description": "This Concha species resembles a ridged, bisected egg until it cracks in half, allowing a thin stalk to sprout from its fleshy insides, covered with doughnut-shaped pods for chemical exchange.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 42.76,
+        "max": 51.84
+      }
+    },
+    {
+      "genus": "Concha",
+      "species": "Labiata",
+      "full_name": "Concha Labiata",
+      "value_credits": 2352400,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "No Volcanism",
+      "description": "A Concha species that thrives in atmospheres rich with carbon dioxide; the lip-like upper opening cracks apart to allow a vertical growth of spiky leaves and bright seeds to stretch upward.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 150.0,
+        "max": 198.8
+      }
+    },
+    {
+      "genus": "Concha",
+      "species": "Renibus",
+      "full_name": "Concha Renibus",
+      "value_credits": 4572400,
+      "atmosphere": "Carbon Dioxide, Water",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "Insignificant",
+      "description": "A species of Concha that relies on heat sources to survive; as the bisected growth increases in size it sprouts a single stalk topped with an array of luminous fronds that facilitate metabolism.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 77.36,
+        "max": 452.01
+      }
+    },
+    {
+      "genus": "Cactoida",
+      "species": "Cortexum",
+      "full_name": "Cactoida Cortexum",
+      "value_credits": 3667600,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "None",
+      "description": "A species of Cactoida that can reach over three metres in height, composed of multiple growths that sprout sealed pods at their peaks, which open up to distribute seeds.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 300,
+      "temperature_k": {
+        "min": 158.67,
+        "max": 196.74
+      }
+    },
+    {
+      "genus": "Cactoida",
+      "species": "Lapis",
+      "full_name": "Cactoida Lapis",
+      "value_credits": 2483600,
+      "atmosphere": "Ammonia",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.28
+      },
+      "volcanism": "Insignificant",
+      "description": "This species of Cactoida appears as a squat growth with a latticed upper surface, which eventually produces a cluster of seed pods.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 300,
+      "temperature_k": {
+        "min": 160.0,
+        "max": 176.64
+      }
+    },
+    {
+      "genus": "Cactoida",
+      "species": "Peperatis",
+      "full_name": "Cactoida Peperatis",
+      "value_credits": 2483600,
+      "atmosphere": "Ammonia",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.28
+      },
+      "volcanism": "Insignificant",
+      "description": "This Cactoida species appears as a swollen five-sided growth, reaching over two metres high and topped with an intersected crown. Only found in ammonia atmospheres.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 300,
+      "temperature_k": {
+        "min": 160.0,
+        "max": 176.66
+      }
+    },
+    {
+      "genus": "Cactoida",
+      "species": "Pullulanta",
+      "full_name": "Cactoida Pullulanta",
+      "value_credits": 3667600,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "None",
+      "description": "This species of Cactoida, exclusively found in carbon dioxide atmospheres, has a globular base from which extend vertical cylinders that can reach over four metres, with rounded seed pods.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 300,
+      "temperature_k": {
+        "min": 180.0,
+        "max": 195.39
+      }
+    },
+    {
+      "genus": "Cactoida",
+      "species": "Vermis",
+      "full_name": "Cactoida Vermis",
+      "value_credits": 16202800,
+      "atmosphere": "Water",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.28
+      },
+      "volcanism": "Insignificant",
+      "description": "This Cactoida species appears as a tall collection of cylinders linked by an undulating membrane and topped with a spiky crown; the most heat-tolerant of Cactoida species.",
+      "location": "High Metal Content, Rocky",
+      "min_distance_between_genetic_samples_m": 300,
+      "temperature_k": {
+        "min": 160.04,
+        "max": 449.99
+      }
+    },
+    {
+      "genus": "Clypeus",
+      "species": "Lacrimam",
+      "full_name": "Clypeus Lacrimam",
+      "value_credits": 8418000,
+      "atmosphere": "Carbon Dioxide, Water",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.25
+      },
+      "volcanism": "Insignificant",
+      "description": "A species of Clypeus that grows a broad, tear-shaped shield to protect the sensitive organism from extreme sunlight; the shield's ridges help direct water droplets down into the soil.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 190.0,
+        "max": 451.95
+      }
+    },
+    {
+      "genus": "Clypeus",
+      "species": "Margaritus",
+      "full_name": "Clypeus Margaritus",
+      "value_credits": 11873200,
+      "atmosphere": "Carbon Dioxide, Water",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.27
+      },
+      "volcanism": "Insignificant",
+      "description": "This Clypeus species produces a curved shield that resembles a large pearl in shape and texture; up to three central organisms grow within it upon a supporting bed of leaves.",
+      "location": "High Metal Content",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 190.0,
+        "max": 452.01
+      }
+    },
+    {
+      "genus": "Clypeus",
+      "species": "Speculumi",
+      "full_name": "Clypeus Speculumi",
+      "value_credits": 16202800,
+      "atmosphere": "Carbon Dioxide, Water",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.24
+      },
+      "volcanism": "Insignificant",
+      "description": "A Clypeus species that grows an angular shield with a mirrored exterior to protect the spiky organisms inside. Found greater than 2,500 Ls from the parent star.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 150,
+      "temperature_k": {
+        "min": 190.0,
+        "max": 451.74
+      }
+    },
+    {
+      "genus": "Tubus",
+      "species": "Cavas",
+      "full_name": "Tubus Cavas",
+      "value_credits": 11873200,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.15
+      },
+      "volcanism": "No Volcanism",
+      "description": "A Tubus species that extends pale vertical stalks composed of rigid modules; colourful fronds frequently appear in the gaps between segments and aid with controlling gaseous exchange.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 800,
+      "temperature_k": {
+        "min": 160.0,
+        "max": 196.25
+      }
+    },
+    {
+      "genus": "Tubus",
+      "species": "Compagibus",
+      "full_name": "Tubus Compagibus",
+      "value_credits": 7774700,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.16
+      },
+      "volcanism": "No Volcanism",
+      "description": "A Tubus species with narrow pale segments and fronds growing between each module; a wide crown of leaves at the peak holds spores on their undersides to germinate across a wide area.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 800,
+      "temperature_k": {
+        "min": 150.96,
+        "max": 196.74
+      }
+    },
+    {
+      "genus": "Tubus",
+      "species": "Conifer",
+      "full_name": "Tubus Conifer",
+      "value_credits": 2415500,
+      "atmosphere": "Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.15
+      },
+      "volcanism": "No Volcanism",
+      "description": "A Tubus species formed from hollow vertical cylinders that can reach heights of six metres; mature specimens are capped with a downturned crown that can distribute seeds on the wind.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 800,
+      "temperature_k": {
+        "min": 150.96,
+        "max": 196.1
+      }
+    },
+    {
+      "genus": "Tubus",
+      "species": "Rosarium",
+      "full_name": "Tubus Rosarium",
+      "value_credits": 2637500,
+      "atmosphere": "Ammonia",
+      "gravity": {
+        "min_g": 0.04,
+        "max_g": 0.16
+      },
+      "volcanism": "Low (tolerance, not preference)",
+      "description": "This Tubus species is composed of squat tubes growing into a vertical spire; the upper pods of mature specimens produce explosive seed pods on their outer skin.",
+      "location": "Rocky",
+      "min_distance_between_genetic_samples_m": 800,
+      "temperature_k": {
+        "min": 160.0,
+        "max": 176.67
+      }
+    },
+    {
+      "genus": "Tubus",
+      "species": "Sororibus",
+      "full_name": "Tubus Sororibus",
+      "value_credits": 5727600,
+      "atmosphere": "Ammonia, Carbon Dioxide",
+      "gravity": {
+        "min_g": 0.05,
+        "max_g": 0.15
+      },
+      "volcanism": "Insignificant",
+      "description": "This species of Tubus grows a cluster of hollow stalks composed of rigid segments; over time these become capped with a growth that flowers and produces seeds.",
+      "location": "High Metal Content",
+      "min_distance_between_genetic_samples_m": 800,
+      "temperature_k": {
+        "min": 160.0,
+        "max": 194.61
+      }
+    }
+  ]
+}
