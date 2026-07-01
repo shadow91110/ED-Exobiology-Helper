@@ -409,6 +409,9 @@ class SpeciesPlannerApp:
         self.slot_boxes = []
         self.slot_value_labels = []
         self.output_box = None
+        self._genus_lookup = {}
+        self._genus_value_cache = {}
+        self._global_value_range = None
 
         self._build_ui()
 
@@ -564,6 +567,13 @@ class SpeciesPlannerApp:
 
         # Build the working list of species that match the user's telemetry.
         # This is a classic filter pipeline: each condition narrows the set.
+        # Reset cached lookup structures before rebuilding them from the new
+        # filtered species list. This keeps the planner responsive as the user
+        # changes filters repeatedly.
+        self._genus_lookup = {}
+        self._genus_value_cache = {}
+        self._global_value_range = None
+
         self.filtered_valid_species = [
             species for species in SPECIES_DB
             if self._atmosphere_matches(species["atmospheres"], atmosphere)
@@ -572,6 +582,18 @@ class SpeciesPlannerApp:
             and self._temperature_matches(species.get("temperature_k"), temp_min, temp_max)
             and self._volcanism_matches(species, volcanism_severity, volcanism_type)
         ]
+
+        if self.filtered_valid_species:
+            for species in self.filtered_valid_species:
+                genus = species["genus"]
+                self._genus_lookup.setdefault(genus, []).append(species)
+
+            for genus, choices in self._genus_lookup.items():
+                values = [species["base_value"] for species in choices]
+                self._genus_value_cache[genus] = (min(values), max(values))
+
+            values = [species["base_value"] for species in self.filtered_valid_species]
+            self._global_value_range = (min(values), max(values))
 
         self._clear_slot_rows()
         self.advice_box.delete("1.0", tk.END)
@@ -668,19 +690,12 @@ class SpeciesPlannerApp:
         )
 
     def _get_global_value_range(self):
-        values = [species["base_value"] for species in self.filtered_valid_species]
-        if not values:
-            return None
-        return min(values), max(values)
+        return self._global_value_range
 
     def _get_genus_value_range(self, genus):
         if not genus:
             return None
-        choices = [species for species in self.filtered_valid_species if species["genus"] == genus]
-        if not choices:
-            return None
-        values = [species["base_value"] for species in choices]
-        return min(values), max(values)
+        return self._genus_value_cache.get(genus)
 
     def _format_value_range(self, low, high):
         if low is None or high is None:
@@ -742,12 +757,13 @@ class SpeciesPlannerApp:
             genus = slot_var.get() if slot_var is not None else ""
             if genus:
                 value_range = self._get_genus_value_range(genus) or global_range
-                choices = [species for species in self.filtered_valid_species if species["genus"] == genus]
+                choices = self._genus_lookup.get(genus, [])
                 best = max(choices, key=lambda item: item["base_value"]) if choices else None
                 if best is not None:
                     item = dict(best)
                     item["value_range"] = value_range
                     item["species_options"] = [species["species"] for species in choices]
+                    item["species_details"] = self.get_species_details(choices)
                     item["description"] = self.get_species_description(genus, choices)
                     items_to_route.append(item)
             else:
@@ -774,6 +790,9 @@ class SpeciesPlannerApp:
         self.first_footfall_var.set(False)
         self._clear_slot_rows()
         self.filtered_valid_species = []
+        self._genus_lookup = {}
+        self._genus_value_cache = {}
+        self._global_value_range = None
         self.is_system_initialized = False
         self.signal_count_var.set("3")
         self.atmos_var.set("Any")
@@ -795,6 +814,20 @@ class SpeciesPlannerApp:
                 if description:
                     return description
         return ""
+
+    def get_species_details(self, choices=None):
+        """Return a list of (species_name, description) pairs for the eligible species."""
+        details = []
+        if not choices:
+            return details
+
+        for item in choices:
+            species_name = item.get("species") or ""
+            description = str(item.get("description") or "").strip()
+            if not description:
+                description = "(no description available)"
+            details.append((species_name, description))
+        return details
 
     def generate_optimized_path(self, items, unresolved_slots=0):
         """Create the planning log shown in the lower output pane.
@@ -819,15 +852,24 @@ class SpeciesPlannerApp:
                     line = f"• {item['genus']} — {self._format_value_range(*value_range)}"
                 else:
                     line = f"• {item['genus']} ({item['species']}) — {item['base_value']:,.0f} CR base"
-                if item.get("species_options"):
-                    options = ", ".join(item["species_options"][:8])
-                    if len(item["species_options"]) > 8:
+                species_options = item.get("species_options")
+                if species_options:
+                    options = ", ".join(species_options[:8])
+                    if len(species_options) > 8:
                         options += ", ..."
                     line += f"\n    ↳ Eligible species: {options}"
                 output += line + "\n"
-                description = item.get("description")
-                if description:
-                    output += f"    ↳ {description}\n"
+                species_details = item.get("species_details") or []
+                if len(species_details) > 1:
+                    output += f"    ↳ Multiple species remain eligible under this genus ({len(species_details)} candidates).\n"
+                if len(species_details) == 1:
+                    species_name, description = species_details[0]
+                    if description:
+                        output += f"    ↳ {species_name}: {description}\n"
+                else:
+                    for species_name, description in species_details:
+                        if species_name or description:
+                            output += f"    ↳ {species_name}: {description}\n"
 
         output += "\n"
         for left_idx in range(2):
