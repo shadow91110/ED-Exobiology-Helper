@@ -25,7 +25,6 @@ The application helps a player narrow down compatible species from telemetry fil
 - [species_planner.py](species_planner.py) — Main Tkinter desktop application
 - [exobiology_species.json](exobiology_species.json) — Primary species database
 - [species_data.json](species_data.json) — Legacy fallback species database
-- [run_planner.pyw](run_planner.pyw) — Optional wrapper for launching the planner without a console window
 
 ## Requirements
 
