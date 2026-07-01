@@ -534,12 +534,13 @@ class SpeciesPlannerApp:
         combo_width = self._get_combo_width(viable_genera)
         self.slot_boxes = []
         self.slot_value_labels = []
+        auto_genus = viable_genera[0] if len(viable_genera) == 1 else ""
 
         for idx in range(1, self.signal_count_target + 1):
             row = ttk.Frame(self.slot_container)
             row.pack(fill="x", pady=4)
             ttk.Label(row, text=f"Slot #{idx}:", width=8).pack(side="left")
-            slot_var = tk.StringVar(value="")
+            slot_var = tk.StringVar(value=auto_genus)
             combo = ttk.Combobox(row, textvariable=slot_var, values=viable_genera, state="readonly", width=combo_width)
             combo.pack(side="left")
             combo.bind("<<ComboboxSelected>>", lambda event: self.update_payout_display())
@@ -680,7 +681,10 @@ class SpeciesPlannerApp:
             overall_min_total += value_range[0]
             overall_max_total += value_range[1]
 
-        self.estimate_var.set(f"Est. Range: {overall_min_total * multiplier:,.0f} - {overall_max_total * multiplier:,.0f} CR")
+        if overall_min_total == overall_max_total:
+            self.estimate_var.set(f"Est. Value: {overall_min_total * multiplier:,.0f} CR")
+        else:
+            self.estimate_var.set(f"Est. Range: {overall_min_total * multiplier:,.0f} - {overall_max_total * multiplier:,.0f} CR")
         unresolved_slots = max(0, self.signal_count_target - len(items_to_route))
         self.generate_optimized_path(items_to_route, unresolved_slots=unresolved_slots)
 
@@ -748,17 +752,24 @@ class SpeciesPlannerApp:
                 output += "    Strategy: Target the boundary line between adjacent terrain clusters. This allows a one-trip collection cycle with minimal re-entry travel.\n\n"
 
         output += "--- EXECUTION PATH (Descending) ---\n"
+        active_zones = [idx for idx in range(2, -1, -1) if zones[idx]]
         step = 1
-        for idx in range(2, -1, -1):
-            if zones[idx]:
-                output += f"{step}. [Zone: {['PLAINS', 'FOOTHILLS', 'MOUNTAINS'][idx]}]\n"
-                terrains = sorted({item["terrain"] for item in zones[idx]})
-                for terrain in terrains:
-                    matches = [item["genus"] for item in zones[idx] if item["terrain"] == terrain]
-                    output += f"   - {terrain.upper()}: {', '.join(matches)}\n"
-                    output += f"     Pilot Cue: {self.get_terrain_advice(terrain)}\n\n"
-                output += f"   -> Transit: {idx > 0 and 'Descending slope to next cluster.' or 'Mission complete.'}\n\n"
-                step += 1
+        for idx in active_zones:
+            if not zones[idx]:
+                continue
+            output += f"{step}. [Zone: {['PLAINS', 'FOOTHILLS', 'MOUNTAINS'][idx]}]\n"
+            terrains = sorted({item["terrain"] for item in zones[idx]})
+            for terrain in terrains:
+                matches = [item["genus"] for item in zones[idx] if item["terrain"] == terrain]
+                output += f"   - {terrain.upper()}: {', '.join(matches)}\n"
+                output += f"     Pilot Cue: {self.get_terrain_advice(terrain)}\n\n"
+            if len(active_zones) <= 1:
+                output += "   -> End condition: Single sample identified; collect it and complete the mission.\n\n"
+            elif idx == active_zones[-1]:
+                output += "   -> End condition: Sample collection complete.\n\n"
+            else:
+                output += "   -> Transit: Descending slope to next cluster.\n\n"
+            step += 1
 
         if unresolved_slots:
             global_range = self._get_global_value_range()
