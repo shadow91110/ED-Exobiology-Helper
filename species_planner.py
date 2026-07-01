@@ -1,3 +1,22 @@
+"""Desktop planner for Elite Dangerous species scouting and payout estimation.
+
+This script loads species data from JSON, lets the user select scan telemetry
+filters, estimates likely rewards, and produces a simple planning report with
+terrain-based pathing hints. The overall flow is intentionally simple:
+
+1. Load and normalize species data.
+2. Let the user choose filters such as atmosphere, composition, gravity,
+   temperature, and volcanism.
+3. Build a list of species that match those filters.
+4. Let the user identify the genus for each signal slot.
+5. Calculate a payout estimate and generate a short planning log.
+
+The code uses a small amount of object-oriented Tkinter structure so that the
+UI state and the logic stay connected. If you are new to this style, think of
+"SpeciesPlannerApp" as the main controller that owns the window, the widgets,
+and the current planning state.
+"""
+
 import json
 import sys
 import tkinter as tk
@@ -6,6 +25,7 @@ from tkinter import ttk, scrolledtext
 
 
 def _split_csv(value):
+    """Split a comma/semicolon separated field into a clean list of values."""
     if not value:
         return []
     if isinstance(value, list):
@@ -14,6 +34,11 @@ def _split_csv(value):
 
 
 def _parse_volcanism_tags(value):
+    """Turn a volcanism field into a small set of normalized tags.
+
+    The source data can be messy, so this helper standardizes common patterns
+    into easier-to-match values like "Major Sulphur Dioxide".
+    """
     tags = []
     if not value:
         return tags
@@ -152,12 +177,12 @@ def _parse_volcanism_components(value):
 # ---------------------------------------------------------------------------
 # Data file resolution
 # ---------------------------------------------------------------------------
-# The planner now targets the richer "exobiology_species.json" schema
-# (genus/species/value_credits/atmosphere/gravity{min_g,max_g}/volcanism/
-# description/location/min_distance_between_genetic_samples_m/temperature_k,
-# wrapped in a {"metadata": ..., "species": [...]} envelope). It will still
-# happily load the older flat-list "species_data.json" format if that's all
-# that's available, so nothing breaks if you swap files around.
+# The planner supports two data formats:
+# 1. A richer JSON structure with species records inside a "species" array.
+# 2. An older flat list of species objects.
+#
+# This makes the tool easier to maintain: the rest of the code can keep using
+# the same normalized fields no matter which file format is present.
 
 NEW_FILENAME = "exobiology_species.json"
 LEGACY_FILENAME = "species_data.json"
@@ -268,8 +293,13 @@ def _parse_temperature_limit(value):
 
 
 def normalize_new_record(raw):
-    """Map an exobiology_species.json entry onto the field names the rest
-    of the app expects to work with."""
+    """Convert a richer JSON species record into the planner's internal format.
+
+    The UI and planning logic expect a few simple fields (genus, species,
+    value, atmosphere list, composition list, gravity, terrain, and so on).
+    This helper creates those normalized fields so the rest of the program can
+    stay consistent even if the source file changes shape.
+    """
     genus = raw.get("genus", "")
     species_name = raw.get("species", "")
     gravity = raw.get("gravity", {}) or {}
@@ -296,8 +326,11 @@ def normalize_new_record(raw):
 
 
 def normalize_legacy_record(raw):
-    """Pass an old-style flat species_data.json record through, filling in
-    the newer optional fields (volcanism / temperature_k) if missing."""
+    """Convert an older flat-list species record to the modern internal shape.
+
+    This keeps backwards compatibility for older data files while still allowing
+    the planner to use the same filtering and reporting code.
+    """
     record = dict(raw)
     record.setdefault("volcanism", "")
     record.setdefault("temperature_k", {})
@@ -342,6 +375,12 @@ def format_temperature(temp_range):
 
 
 class SpeciesPlannerApp:
+    """Main controller for the planner GUI.
+
+    This class owns the Tkinter widgets, stores the current filter state, and
+    updates the estimate and planning report whenever the user changes input.
+    """
+
     def __init__(self, root):
         self.root = root
         self.root.title("ED Deep Species Planner")
@@ -374,6 +413,12 @@ class SpeciesPlannerApp:
         self._build_ui()
 
     def _build_ui(self):
+        """Create the main window layout and widgets.
+
+        The UI is split into two phases:
+        1. Scan telemetry filters.
+        2. Genus identification and planning output.
+        """
         header = ttk.Frame(self.root, padding=(16, 12, 16, 6))
         header.pack(fill="x")
 
@@ -499,6 +544,13 @@ class SpeciesPlannerApp:
         self._fit_text_box(self.advice_box)
 
     def calculate_estimate(self):
+        """Apply the telemetry filters and build the initial planning state.
+
+        This is one of the key methods in the program. It reads the values from
+        the Phase 1 controls, filters the species database, clears any old slot
+        rows, recreates the slot rows for the requested signal count, and then
+        asks the UI to refresh the payout display.
+        """
         atmosphere = self.atmos_var.get()
         composition = self.composition_var.get()
         gravity_class = self.gravity_var.get()
@@ -510,6 +562,8 @@ class SpeciesPlannerApp:
         volcanism_severity = self.volcanism_severity_var.get()
         volcanism_type = self.volcanism_type_var.get()
 
+        # Build the working list of species that match the user's telemetry.
+        # This is a classic filter pipeline: each condition narrows the set.
         self.filtered_valid_species = [
             species for species in SPECIES_DB
             if self._atmosphere_matches(species["atmospheres"], atmosphere)
@@ -530,6 +584,8 @@ class SpeciesPlannerApp:
 
         self.is_system_initialized = True
 
+        # The user will later choose a genus for each signal slot. The combo box
+        # values are the set of genera that survived the filter stage.
         viable_genera = sorted({species["genus"] for species in self.filtered_valid_species})
         combo_width = self._get_combo_width(viable_genera)
         self.slot_boxes = []
@@ -559,11 +615,13 @@ class SpeciesPlannerApp:
         self.update_payout_display()
 
     def _atmosphere_matches(self, atmospheres, selected):
+        """Return True when a species matches the selected atmosphere filter."""
         if not selected or selected == "Any":
             return True
         return selected in atmospheres
 
     def _temperature_matches(self, temp_range, temp_min, temp_max):
+        """Check whether a species temperature range overlaps the selected range."""
         if temp_min is None and temp_max is None:
             return True
         if not temp_range:
@@ -579,6 +637,7 @@ class SpeciesPlannerApp:
         return True
 
     def _volcanism_matches(self, species, severity_selected, type_selected):
+        """Check whether a species matches the selected volcanism severity/type."""
         severity_choice = _canonical_volcanism_severity(severity_selected)
         type_choice = _canonical_volcanism_type(type_selected)
         components = species.get("volcanism_components", [])
@@ -631,6 +690,12 @@ class SpeciesPlannerApp:
         return f"{low:,.0f} - {high:,.0f} CR"
 
     def update_payout_display(self):
+        """Refresh the value labels shown beside each genus slot.
+
+        This is a small but important step: as the user picks a genus, the UI
+        immediately shows the value range for that genus so the estimate feels
+        interactive.
+        """
         if not self.is_system_initialized:
             return
 
@@ -649,6 +714,13 @@ class SpeciesPlannerApp:
         self.optimize_and_value()
 
     def optimize_and_value(self):
+        """Combine selected genera into an estimate and planning report.
+
+        Each slot contributes a value range from the eligible species for that
+        genus. The total estimate is then shown as either a single value or a
+        range, depending on how much uncertainty remains. In other words, this
+        method is the bridge between the user's choices and the output report.
+        """
         if not self.is_system_initialized:
             return
 
@@ -662,6 +734,9 @@ class SpeciesPlannerApp:
         overall_max_total = 0
         items_to_route = []
 
+        # Build a small report item for each chosen genus. We keep the full value
+        # range for the genus as well as the list of concrete species options so
+        # the lower output pane can explain the uncertainty to the user.
         for slot in self.slot_boxes:
             slot_var = slot[0] if len(slot) > 0 else None
             genus = slot_var.get() if slot_var is not None else ""
@@ -695,6 +770,7 @@ class SpeciesPlannerApp:
         self.slot_value_labels = []
 
     def reset_form(self):
+        """Restore the form to its initial empty state."""
         self.first_footfall_var.set(False)
         self._clear_slot_rows()
         self.filtered_valid_species = []
@@ -712,6 +788,7 @@ class SpeciesPlannerApp:
         self._fit_text_box(self.advice_box)
 
     def get_species_description(self, genus, choices=None):
+        """Return a human-readable description for a genus when one is available."""
         if choices:
             for item in choices:
                 description = item.get("description")
@@ -720,6 +797,13 @@ class SpeciesPlannerApp:
         return ""
 
     def generate_optimized_path(self, items, unresolved_slots=0):
+        """Create the planning log shown in the lower output pane.
+
+        The report lists the selected genera, the value range for each one, and
+        a simple terrain-based route suggestion for collecting them. The logic
+        groups selected genera by a simplified terrain map so the output feels
+        like a practical scouting plan instead of a raw list.
+        """
         zones = [[], [], []]
         for item in items:
             zones[self.get_terrain_zone(item.get("dss_visual_zone"))].append(item)
@@ -782,6 +866,7 @@ class SpeciesPlannerApp:
         self._fit_text_box(self.advice_box)
 
     def get_terrain_zone(self, dss_zone):
+        """Map a DSS zone label to the planner's simplified zone buckets."""
         mapping = {
             "Lowland Plains / Flatlands": 0,
             "Geothermal / Active Fields": 1,
@@ -795,6 +880,7 @@ class SpeciesPlannerApp:
         return mapping.get(dss_zone, 1)
 
     def get_terrain_advice(self, terrain):
+        """Return a short pilot cue for a given terrain type."""
         advice_map = {
             "Mountains": "Check high-altitude rock formations. Look for clusters clinging to vertical cliff faces or tucked into the deep, shadowed pockets of craggy peaks.",
             "Craters": "Survey the central 'uplift' spike in the middle of the crater or the transition zone where the smooth basin floor meets the steep interior rim.",
@@ -811,18 +897,22 @@ class SpeciesPlannerApp:
         return advice_map.get(terrain, "Perform a high-intensity surface sweep; no specialized terrain markers identified.")
 
     def _zone_label(self, index):
+        """Return a short label for the landing-zone boundary description."""
         return "PLAINS/FOOTHILLS" if index == 0 else "FOOTHILLS/MOUNTAINS"
 
     def _format_gravity_value(self, value):
+        """Format gravity values for the UI dropdown in a compact way."""
         return f"{value:.2f}".rstrip("0").rstrip(".") or "0"
 
     def _get_combo_width(self, values):
+        """Estimate a sensible width for the genus dropdown based on content."""
         if not values:
             return 10
         longest = max(values, key=len)
         return max(10, len(longest) + max(1, len(longest) // 3))
 
     def _fit_text_box(self, widget, min_height=4, max_height=28):
+        """Resize a text box so it fits its current content cleanly."""
         content = widget.get("1.0", tk.END).rstrip("\n")
         line_count = max(1, len(content.splitlines()))
         widget.configure(height=min(max_height, max(min_height, line_count + 1)))
