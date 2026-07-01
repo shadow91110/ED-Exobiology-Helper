@@ -543,7 +543,14 @@ class SpeciesPlannerApp:
             combo = ttk.Combobox(row, textvariable=slot_var, values=viable_genera, state="readonly", width=combo_width)
             combo.pack(side="left")
             combo.bind("<<ComboboxSelected>>", lambda event: self.update_payout_display())
-            value_label = ttk.Label(row, text="—", width=12, foreground="#2ecc71", font=("Courier New", 10, "bold"))
+            value_label = ttk.Label(
+                row,
+                text="—",
+                width=24,
+                anchor="w",
+                foreground="#2ecc71",
+                font=("Courier New", 10, "bold"),
+            )
             value_label.pack(side="left", padx=(6, 0))
             self.slot_boxes.append((slot_var, combo, value_label))
             self.slot_value_labels.append(value_label)
@@ -600,34 +607,43 @@ class SpeciesPlannerApp:
             for component in components
         )
 
+    def _get_global_value_range(self):
+        values = [species["base_value"] for species in self.filtered_valid_species]
+        if not values:
+            return None
+        return min(values), max(values)
+
+    def _get_genus_value_range(self, genus):
+        if not genus:
+            return None
+        choices = [species for species in self.filtered_valid_species if species["genus"] == genus]
+        if not choices:
+            return None
+        values = [species["base_value"] for species in choices]
+        return min(values), max(values)
+
+    def _format_value_range(self, low, high):
+        if low is None or high is None:
+            return "—"
+        if low == high:
+            return f"{low:,.0f} CR"
+        return f"{low:,.0f} - {high:,.0f} CR"
+
     def update_payout_display(self):
         if not self.is_system_initialized:
             return
 
-        multiplier = 5 if self.first_footfall_var.get() else 1
-        selected_genera = [slot_var.get() for slot_var, _, _ in self.slot_boxes if slot_var.get()]
-
         for slot_var, _, value_label in self.slot_boxes:
             genus = slot_var.get()
-            if genus:
-                choices = [species for species in self.filtered_valid_species if species["genus"] == genus]
-                if choices:
-                    best = max(choices, key=lambda item: item["base_value"])
-                    value_label.configure(text=f"{best['base_value']:,.0f} CR")
+            if value_label is not None:
+                if genus:
+                    value_range = self._get_genus_value_range(genus)
+                    if value_range is not None:
+                        value_label.configure(text=self._format_value_range(*value_range))
+                    else:
+                        value_label.configure(text="—")
                 else:
                     value_label.configure(text="—")
-            else:
-                value_label.configure(text="—")
-
-        if not selected_genera:
-            values = [species["base_value"] for species in self.filtered_valid_species]
-            if values:
-                minimum = min(values) * multiplier
-                maximum = max(values) * multiplier
-                self.estimate_var.set(f"Est. Range: {minimum:,.0f} - {maximum:,.0f} CR")
-            else:
-                self.estimate_var.set("No compatible species found.")
-            return
 
         self.optimize_and_value()
 
@@ -636,23 +652,37 @@ class SpeciesPlannerApp:
             return
 
         multiplier = 5 if self.first_footfall_var.get() else 1
-        overall_total = 0
+        global_range = self._get_global_value_range()
+        if not global_range:
+            self.estimate_var.set("No compatible species found.")
+            return
+
+        overall_min_total = 0
+        overall_max_total = 0
         items_to_route = []
 
-        for _, slot_var, _ in self.slot_boxes:
-            genus = slot_var.get()
+        for slot in self.slot_boxes:
+            slot_var = slot[0] if len(slot) > 0 else None
+            genus = slot_var.get() if slot_var is not None else ""
             if genus:
+                value_range = self._get_genus_value_range(genus) or global_range
                 choices = [species for species in self.filtered_valid_species if species["genus"] == genus]
-                if choices:
-                    best = max(choices, key=lambda item: item["base_value"])
-                    overall_total += best["base_value"]
-                    best_item = dict(best)
-                    best_item["description"] = self.get_species_description(genus, choices)
-                    items_to_route.append(best_item)
+                best = max(choices, key=lambda item: item["base_value"]) if choices else None
+                if best is not None:
+                    item = dict(best)
+                    item["value_range"] = value_range
+                    item["species_options"] = [species["species"] for species in choices]
+                    item["description"] = self.get_species_description(genus, choices)
+                    items_to_route.append(item)
+            else:
+                value_range = global_range
 
-        final_payout = overall_total * multiplier
-        self.estimate_var.set(f"Projected: {final_payout:,.0f} CR")
-        self.generate_optimized_path(items_to_route)
+            overall_min_total += value_range[0]
+            overall_max_total += value_range[1]
+
+        self.estimate_var.set(f"Est. Range: {overall_min_total * multiplier:,.0f} - {overall_max_total * multiplier:,.0f} CR")
+        unresolved_slots = max(0, self.signal_count_target - len(items_to_route))
+        self.generate_optimized_path(items_to_route, unresolved_slots=unresolved_slots)
 
     def _clear_slot_rows(self):
         for widget in self.slot_container.winfo_children():
@@ -685,32 +715,37 @@ class SpeciesPlannerApp:
                     return description
         return ""
 
-    def generate_optimized_path(self, items):
+    def generate_optimized_path(self, items, unresolved_slots=0):
         zones = [[], [], []]
         for item in items:
-            zones[self.get_terrain_zone(item["dss_visual_zone"])].append(item)
+            zones[self.get_terrain_zone(item.get("dss_visual_zone"))].append(item)
 
         output = "🚀 SURFACE EXPLORATION CHAINING PROTOCOL:\n\n"
         output += "--- SPECIES IDENTIFIERS ---\n"
-        for item in items:
-            line = f"• {item['genus']} ({item['species']}) — {item['base_value']:,.0f} CR base"
-            extras = []
-            if item.get("volcanism"):
-                extras.append(f"volcanism: {item['volcanism']}")
-            temp_str = format_temperature(item.get("temperature_k"))
-            if temp_str:
-                extras.append(f"temp: {temp_str}")
-            if extras:
-                line += f"  [{'; '.join(extras)}]"
-            output += line + "\n"
-            description = item.get("description")
-            if description:
-                output += f"    ↳ {description}\n"
+        if not items:
+            output += "No genera selected yet. The current estimate reflects the full range of compatible species under the active filters.\n"
+        else:
+            for item in items:
+                value_range = item.get("value_range")
+                if value_range:
+                    line = f"• {item['genus']} — {self._format_value_range(*value_range)}"
+                else:
+                    line = f"• {item['genus']} ({item['species']}) — {item['base_value']:,.0f} CR base"
+                if item.get("species_options"):
+                    options = ", ".join(item["species_options"][:8])
+                    if len(item["species_options"]) > 8:
+                        options += ", ..."
+                    line += f"\n    ↳ Eligible species: {options}"
+                output += line + "\n"
+                description = item.get("description")
+                if description:
+                    output += f"    ↳ {description}\n"
+
         output += "\n"
         for left_idx in range(2):
             if zones[left_idx] and zones[left_idx + 1]:
                 output += f">>> OPTIMAL LANDING ZONE: [{self._zone_label(left_idx)}]\n"
-                output += "    Strategy: Target the boundary line between biomes. This allows for a 'one-trip' collection cycle without orbital re-entry.\n\n"
+                output += "    Strategy: Target the boundary line between adjacent terrain clusters. This allows a one-trip collection cycle with minimal re-entry travel.\n\n"
 
         output += "--- EXECUTION PATH (Descending) ---\n"
         step = 1
@@ -724,6 +759,12 @@ class SpeciesPlannerApp:
                     output += f"     Pilot Cue: {self.get_terrain_advice(terrain)}\n\n"
                 output += f"   -> Transit: {idx > 0 and 'Descending slope to next cluster.' or 'Mission complete.'}\n\n"
                 step += 1
+
+        if unresolved_slots:
+            global_range = self._get_global_value_range()
+            if global_range:
+                output += f"Unresolved slots: {unresolved_slots}\n"
+                output += f"Potential payout for unresolved slots: {self._format_value_range(global_range[0], global_range[1])}\n"
 
         self.advice_box.delete("1.0", tk.END)
         self.advice_box.insert(tk.END, output)
