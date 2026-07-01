@@ -2,108 +2,220 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ED Exobiology Advanced Species Planner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ED Deep Species Planner</title>
     <style>
-    :root { 
-        --bg-dark: #111111; 
-        --panel-bg: #1c1c1c; 
-        --accent: #e67e22; 
-        --text-light: #e0e0e0; 
-        --success: #2ecc71; 
-        --border: #2d2d2d; 
-    }
-    body { font-family: 'Courier New', Courier, monospace; background-color: var(--bg-dark); color: var(--text-light); padding: 20px; display: flex; justify-content: center; }
-    .container { width: 100%; max-width: 750px; background: var(--panel-bg); border: 1px solid var(--border); padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.7); }
-    h1 { text-align: center; color: var(--accent); font-size: 1.3rem; margin-top: 0; letter-spacing: 1px; }
-    fieldset { border: 1px solid var(--border); margin-bottom: 25px; padding: 15px; }
-    legend { color: var(--accent); font-weight: bold; padding: 0 10px; font-size: 0.95rem; }
-    
-    /* Input and Buttons */
-    .grid-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-    .input-group { display: flex; flex-direction: column; }
-    label { font-size: 0.85rem; margin-bottom: 5px; color: #999; }
-    input, select { background-color: #252525; border: 1px solid var(--border); color: #fff; padding: 8px; font-family: inherit; }
-    
-    button { grid-column: span 2; background-color: var(--accent); color: white; border: none; padding: 12px; font-family: inherit; font-weight: bold; cursor: pointer; margin-top: 5px; font-size: 0.9rem; }
-    button:disabled { background-color: #3a3a3a; color: #777; cursor: not-allowed; }
-    
-    /* Toggle Switch Styles */
-    .switch-wrapper { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; padding: 0 5px; }
-    .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 20px; }
-    .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: #fff; transition: .4s; border-radius: 50%; }
-    input:checked + .slider { background-color: var(--accent); }
-    input:checked + .slider:before { transform: translateX(20px); }
-
-    /* Reset Button */
-    .reset-btn { background-color: #333; border: 1px solid #c0392b; color: #ff6b6b; margin-top: 10px; width: 100%; padding: 8px; cursor: pointer; font-family: inherit; }
-    .reset-btn:hover { background-color: #c0392b; color: white; }
-
-    .estimate-display { text-align: center; font-size: 1.1rem; font-weight: bold; color: var(--success); margin-top: 15px; }
-    .slot-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px dashed var(--border); padding-bottom: 8px; }
-    .slot-row label { color: var(--accent); font-weight: bold; }
-    .slot-row select { width: 65%; }
-    .console-box { background-color: #080808; border: 1px solid var(--border); padding: 15px; height: 260px; overflow-y: auto; font-size: 0.82rem; line-height: 1.5; color: #2ecc71; white-space: pre-wrap; font-weight: bold; }
-</style>
+        :root {
+            --bg-dark: #0f1115;
+            --panel-bg: #171b24;
+            --accent: #e67e22;
+            --text-light: #e8e8e8;
+            --muted: #8b93a5;
+            --success: #2ecc71;
+            --border: #2d3442;
+        }
+        body {
+            margin: 0;
+            font-family: "Courier New", Courier, monospace;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            padding: 20px;
+        }
+        .container {
+            max-width: 920px;
+            margin: 0 auto;
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+        }
+        h1 {
+            margin-top: 0;
+            color: var(--accent);
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .toolbar .note {
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+        fieldset {
+            border: 1px solid var(--border);
+            margin-bottom: 18px;
+            padding: 14px;
+        }
+        legend {
+            color: var(--accent);
+            font-weight: bold;
+            padding: 0 8px;
+        }
+        .grid-inputs {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        label {
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+        input, select, button {
+            font-family: inherit;
+            font-size: 0.92rem;
+            padding: 8px;
+            border: 1px solid var(--border);
+            background: #1d232d;
+            color: var(--text-light);
+        }
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:disabled {
+            background: #3a3a3a;
+            color: #7a7a7a;
+            cursor: not-allowed;
+        }
+        .switch-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .estimate-display {
+            margin-top: 12px;
+            font-weight: bold;
+            color: var(--success);
+        }
+        .slot-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--border);
+        }
+        .slot-row label {
+            color: var(--accent);
+            min-width: 70px;
+        }
+        .slot-row select {
+            flex: 1;
+        }
+        .slot-row .value-label {
+            min-width: 160px;
+            color: var(--success);
+            font-weight: bold;
+        }
+        .console-box, .path-box {
+            background: #080b10;
+            border: 1px solid var(--border);
+            padding: 12px;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            font-size: 0.85rem;
+            line-height: 1.45;
+        }
+        .console-box {
+            height: 240px;
+            color: #8ff0a4;
+        }
+        .path-box {
+            color: #f1c40f;
+            min-height: 180px;
+        }
+        .status { color: var(--muted); margin-top: 6px; font-size: 0.8rem; }
+    </style>
 </head>
 <body>
-<div class="container">
-    <h1>🚀 ELITE DANGEROUS: DEEP SPECIES PLANNER v2 🚀</h1>
-    
-    <button onclick="resetForm()" class="ui-button">RESET FORM</button>
-
-    <div class="switch-container">
-        <span>First Footfall:</span>
-        <label class="switch">
-            <input type="checkbox" id="first_footfall_toggle" onchange="updatePayoutDisplay()">
-            <span class="slider"></span>
-        </label>
-    </div>
-    <fieldset>
-        <legend> Phase 1: Scan Telemetry Criteria </legend>
-        <div class="grid-inputs">
-            <div class="input-group"><label>Biological Signals Count:</label><input type="number" id="signal_count" min="1" max="15" value="3"></div>
-            <div class="input-group"><label>Primary Atmosphere Type:</label><select id="atmos">
-                <option value="Methane">Methane</option>
-                <option value="Methane-rich">Methane-rich</option>
-                <option value="Argon">Argon</option>
-                <option value="Argon-rich">Argon-rich</option>
-                <option value="Carbon Dioxide" selected>Carbon Dioxide</option>
-                <option value="Carbon Dioxide-rich">Carbon Dioxide-rich</option>
-                <option value="Nitrogen">Nitrogen</option>
-                <option value="Neon">Neon</option>
-                <option value="Neon-rich">Neon-rich</option>
-                <option value="Oxygen">Oxygen</option>
-                <option value="Sulfur Dioxide">Sulfur Dioxide</option>
-                <option value="Ammonia">Ammonia</option>
-                <option value="Water">Water</option>
-                <option value="Water-rich">Water-rich</option>
-                <option value="Helium">Helium</option>
-            </select></div>
-            <div class="input-group"><label>Planetary Body Material:</label><select id="composition"><option value="Icy">Icy</option><option value="Rocky" selected>Rocky</option><option value="Metal">Metal Rich / HMC</option></select></div>
-            <div class="input-group"><label>Surface Gravity (G Force):</label><input type="number" id="gravity" step="0.01" value="0.12"></div>
-            <button type="button" onclick="calculateEstimate()">Initialize Environmental Matrix</button>
+    <div class="container">
+        <h1>ED DEEP SPECIES PLANNER</h1>
+        <div class="toolbar">
+            <div class="note">Loads the shared species JSON when available; otherwise it falls back to the built-in dataset.</div>
+            <button type="button" onclick="resetForm()">RESET</button>
         </div>
-        <div class="estimate-display" id="estimate_label">Awaiting Initial Scan Parameters...</div>
-    </fieldset>
-    <fieldset>
-        <legend> Phase 2: Mapped Genus Identification Data </legend>
-        <div id="dropdown_container"><p style="color: #555; font-size: 0.85rem; text-align: center;">Execute entry scan filters above to assign dynamic genus evaluation targets.</p></div>
-        <button type="button" id="calc_p2_btn" onclick="optimizeAndValue()" disabled style="width: 100%;">Cross-Reference Species Validation Profiles</button>
-    </fieldset>
-    <fieldset>
-        <legend> Flight Operations & Terminal Output Logs </legend>
-        <div class="console-box" id="output_box">Terminal core online... system status nominal. o7</div>
+
+        <div class="switch-row">
+            <label for="first_footfall_toggle">First Footfall</label>
+            <input type="checkbox" id="first_footfall_toggle" onchange="updatePayoutDisplay()">
+        </div>
+
+        <fieldset>
+            <legend>Phase 1: Scan Telemetry</legend>
+            <div class="grid-inputs">
+                <div class="input-group">
+                    <label for="signal_count">Biological Signals Count</label>
+                    <input type="number" id="signal_count" min="1" max="15" value="3">
+                </div>
+                <div class="input-group">
+                    <label for="atmosphere">Primary Atmosphere</label>
+                    <select id="atmosphere"></select>
+                </div>
+                <div class="input-group">
+                    <label for="composition">Planetary Composition</label>
+                    <select id="composition"></select>
+                </div>
+                <div class="input-group">
+                    <label for="gravity">Surface Gravity (G)</label>
+                    <select id="gravity"></select>
+                </div>
+                <div class="input-group">
+                    <label for="temp_min">Temperature Min (K)</label>
+                    <input type="number" id="temp_min" min="0" max="1000" value="0">
+                </div>
+                <div class="input-group">
+                    <label for="temp_max">Temperature Max (K)</label>
+                    <input type="number" id="temp_max" min="0" max="1000" value="1000">
+                </div>
+                <div class="input-group">
+                    <label for="volcanism_severity">Volcanism Severity</label>
+                    <select id="volcanism_severity"></select>
+                </div>
+                <div class="input-group">
+                    <label for="volcanism_type">Volcanism Type</label>
+                    <select id="volcanism_type"></select>
+                </div>
+            </div>
+            <div style="margin-top: 12px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <button type="button" onclick="calculateEstimate()">INITIALIZE MATRIX</button>
+                <div id="data_status" class="status">Loading species database…</div>
+            </div>
+            <div class="estimate-display" id="estimate_label">Awaiting telemetry input…</div>
         </fieldset>
 
-    <fieldset>
-        <legend> Tactical Landing & Navigation Path </legend>
-        <div id="pathing_advice" style="font-family: 'Courier New', Courier, monospace; color: #f1c40f; padding: 10px; background: #000; border: 1px solid #333; white-space: pre-wrap;">
-        Awaiting survey data...
-        </div>
-</fieldset>
-</div>
-<script src="app.js"></script>
+        <fieldset>
+            <legend>Phase 2: Genus Identification</legend>
+            <div id="dropdown_container"></div>
+            <button type="button" id="calc_p2_btn" onclick="optimizeAndValue()" disabled style="margin-top: 8px; width: 100%;">CROSS-REFERENCE SPECIES PROFILES</button>
+        </fieldset>
+
+        <fieldset>
+            <legend>Flight Operations Log</legend>
+            <div class="console-box" id="output_box">Terminal core online. Waiting for survey data.</div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Tactical Landing Path</legend>
+            <div class="path-box" id="pathing_advice">Awaiting survey data…</div>
+        </fieldset>
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>
