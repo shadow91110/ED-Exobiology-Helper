@@ -5,6 +5,150 @@ from pathlib import Path
 from tkinter import ttk, scrolledtext
 
 
+def _split_csv(value):
+    if not value:
+        return []
+    if isinstance(value, list):
+        return [piece.strip() for piece in value if piece and str(piece).strip()]
+    return [piece.strip() for piece in str(value).replace(";", ",").split(",") if piece.strip()]
+
+
+def _parse_volcanism_tags(value):
+    tags = []
+    if not value:
+        return tags
+
+    parts = [part.strip() for part in str(value).replace(";", ",").split(",") if part.strip()]
+    pending_intensity = None
+
+    for part in parts:
+        segment = part.strip()
+        lower = segment.lower()
+
+        if any(token in lower for token in ("no volcanism", "none", "nil")):
+            tags.append("None")
+            pending_intensity = None
+            continue
+        if "insignificant" in lower or "low (tolerance" in lower or "low" in lower:
+            tags.append("Insignificant")
+            pending_intensity = None
+            continue
+
+        intensity = None
+        if "major" in lower:
+            intensity = "Major"
+            segment = segment.replace("major", "", 1).strip()
+        elif "minor" in lower:
+            intensity = "Minor"
+            segment = segment.replace("minor", "", 1).strip()
+
+        if intensity:
+            pending_intensity = intensity
+
+        cleaned = segment
+        cleaned = cleaned.replace("magma", "").replace("geyser", "").replace("geysers", "")
+        cleaned = cleaned.replace("/", " ")
+        cleaned = cleaned.strip()
+        cleaned = cleaned.replace("(tolerance, not preference)", "")
+        cleaned = cleaned.replace("and", " ").replace("or", " ")
+
+        if not cleaned and pending_intensity:
+            continue
+
+        for candidate in [item.strip() for item in cleaned.split() if item.strip()]:
+            lowered = candidate.lower()
+            if lowered in {"and", "or", "of", "the"}:
+                continue
+            if lowered in {"carbon", "dioxide"}:
+                substance = "Carbon Dioxide"
+            elif lowered in {"methane"}:
+                substance = "Methane"
+            elif lowered in {"nitrogen"}:
+                substance = "Nitrogen"
+            elif lowered in {"ammonia"}:
+                substance = "Ammonia"
+            elif lowered in {"water"}:
+                substance = "Water"
+            elif lowered in {"silicate", "silicate-based", "silicate/vapor", "vapour", "vapor"}:
+                substance = "Silicate"
+            elif lowered in {"rocky"}:
+                substance = "Rocky"
+            elif lowered in {"metallic"}:
+                substance = "Metallic"
+            elif lowered in {"sulphur", "sulfur"}:
+                substance = "Sulphur Dioxide"
+            elif lowered in {"oxygen"}:
+                substance = "Oxygen"
+            elif lowered in {"argon"}:
+                substance = "Argon"
+            elif lowered in {"helium"}:
+                substance = "Helium"
+            elif lowered in {"neon"}:
+                substance = "Neon"
+            else:
+                continue
+            intensity_to_use = pending_intensity if pending_intensity and not intensity else (intensity or pending_intensity)
+            tags.append(f"{intensity_to_use} {substance}" if intensity_to_use else substance)
+
+        if intensity:
+            pending_intensity = None
+
+    return sorted(set(tags))
+
+
+def _canonical_volcanism_severity(value):
+    if value is None:
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    lowered = text.lower()
+    if lowered in {"any", "all"}:
+        return "Any"
+    if lowered in {"none", "no volcanism", "nil"}:
+        return "None"
+    if lowered in {"low", "insignificant", "low (tolerance, not preference)"}:
+        return "Low"
+    if lowered in {"minor"}:
+        return "Minor"
+    if lowered in {"major"}:
+        return "Major"
+    return text
+
+
+def _canonical_volcanism_type(value):
+    if value is None:
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    lowered = text.lower()
+    if lowered in {"any", "all"}:
+        return "Any"
+    if lowered in {"none", "no volcanism", "nil"}:
+        return "None"
+    return text
+
+
+def _parse_volcanism_components(value):
+    if not value:
+        return []
+
+    components = []
+    for tag in _parse_volcanism_tags(value):
+        if tag.lower() in {"none", "insignificant"}:
+            components.append(("None" if tag.lower() == "none" else "Low", None))
+            continue
+        parts = tag.split(" ", 1)
+        if len(parts) == 2:
+            severity = _canonical_volcanism_severity(parts[0])
+            volcanism_type = _canonical_volcanism_type(parts[1])
+            components.append((severity, volcanism_type))
+        else:
+            components.append((_canonical_volcanism_severity(tag), None))
+    return components
+
+
 # ---------------------------------------------------------------------------
 # Data file resolution
 # ---------------------------------------------------------------------------
@@ -113,10 +257,14 @@ def zone_for(terrain):
 # Record normalization
 # ---------------------------------------------------------------------------
 
-def _split_csv(value):
-    if not value:
-        return []
-    return [piece.strip() for piece in value.split(",") if piece.strip()]
+def _parse_temperature_limit(value):
+    text = str(value).strip()
+    if not text or text.lower() in {"any", "all"}:
+        return None
+    try:
+        return int(float(text))
+    except ValueError:
+        return None
 
 
 def normalize_new_record(raw):
@@ -127,6 +275,7 @@ def normalize_new_record(raw):
     gravity = raw.get("gravity", {}) or {}
     terrain = terrain_for(genus, species_name)
 
+    volcanism_text = raw.get("volcanism", "")
     return {
         "genus": genus,
         "species": species_name,
@@ -139,7 +288,9 @@ def normalize_new_record(raw):
         "terrain": terrain,
         "dss_visual_zone": zone_for(terrain),
         "description": raw.get("description", ""),
-        "volcanism": raw.get("volcanism", ""),
+        "volcanism": volcanism_text,
+        "volcanism_tags": _parse_volcanism_tags(volcanism_text),
+        "volcanism_components": _parse_volcanism_components(volcanism_text),
         "temperature_k": raw.get("temperature_k", {}) or {},
     }
 
@@ -154,6 +305,8 @@ def normalize_legacy_record(raw):
     record.setdefault("compositions", [])
     record.setdefault("terrain", "Plains")
     record.setdefault("dss_visual_zone", zone_for(record["terrain"]))
+    record["volcanism_tags"] = _parse_volcanism_tags(record.get("volcanism", ""))
+    record["volcanism_components"] = _parse_volcanism_components(record.get("volcanism", ""))
     return record
 
 
@@ -246,11 +399,15 @@ class SpeciesPlannerApp:
         telemetry.pack(fill="x", padx=12, pady=8)
 
         self.signal_count_var = tk.StringVar(value="3")
-        self.atmos_var = tk.StringVar(value="Carbon Dioxide")
+        self.atmos_var = tk.StringVar(value="Any")
         self.composition_var = tk.StringVar(value="Rocky")
         gravity_values = [self._format_gravity_value(item["max_gravity"]) for item in SPECIES_DB]
         unique_gravity_values = sorted(set(gravity_values), key=lambda value: float(value)) if gravity_values else ["1.0"]
-        self.gravity_var = tk.StringVar(value=unique_gravity_values[-1] if unique_gravity_values else "1.0")
+        self.gravity_var = tk.StringVar(value="Any")
+        self.temp_min_var = tk.StringVar(value="0")
+        self.temp_max_var = tk.StringVar(value="1000")
+        self.volcanism_severity_var = tk.StringVar(value="Any")
+        self.volcanism_type_var = tk.StringVar(value="Any")
 
         row1 = ttk.Frame(telemetry)
         row1.pack(fill="x")
@@ -259,9 +416,7 @@ class SpeciesPlannerApp:
         ttk.Spinbox(row1, from_=1, to=15, textvariable=self.signal_count_var, width=8).pack(side="left")
 
         ttk.Label(row1, text="Atmosphere:").pack(side="left", padx=(18, 8))
-        atmos_values = sorted({item for species in SPECIES_DB for item in species["atmospheres"]})
-        if "Carbon Dioxide" not in atmos_values and atmos_values:
-            self.atmos_var.set(atmos_values[0])
+        atmos_values = sorted({"Any", *{item for species in SPECIES_DB for item in species["atmospheres"]}})
         self.atmos_cb = ttk.Combobox(row1, textvariable=self.atmos_var, values=atmos_values, state="readonly", width=18)
         self.atmos_cb.pack(side="left")
         self.atmos_cb.configure(font=("Courier New", 10, "bold"))
@@ -277,10 +432,33 @@ class SpeciesPlannerApp:
         self.comp_cb.configure(style="TCombobox")
 
         ttk.Label(row1, text="Gravity:").pack(side="left", padx=(18, 8))
-        self.gravity_cb = ttk.Combobox(row1, textvariable=self.gravity_var, values=unique_gravity_values, state="readonly", width=10)
+        gravity_choices = ["Any"] + unique_gravity_values
+        self.gravity_cb = ttk.Combobox(row1, textvariable=self.gravity_var, values=gravity_choices, state="readonly", width=10)
         self.gravity_cb.pack(side="left")
         self.gravity_cb.configure(font=("Courier New", 10, "bold"))
         self.gravity_cb.configure(style="TCombobox")
+
+        row2 = ttk.Frame(telemetry)
+        row2.pack(fill="x", pady=(10, 0))
+
+        ttk.Label(row2, text="Temp (K):").pack(side="left", padx=(0, 8))
+        ttk.Spinbox(row2, from_=0, to=1000, textvariable=self.temp_min_var, width=8).pack(side="left")
+        ttk.Label(row2, text="to").pack(side="left", padx=(6, 6))
+        ttk.Spinbox(row2, from_=0, to=1000, textvariable=self.temp_max_var, width=8).pack(side="left")
+
+        ttk.Label(row2, text="Volcanism Severity:").pack(side="left", padx=(18, 8))
+        severity_values = ["Any", "None", "Low", "Insignificant", "Minor", "Major"]
+        self.volcanism_severity_cb = ttk.Combobox(row2, textvariable=self.volcanism_severity_var, values=severity_values, state="readonly", width=12)
+        self.volcanism_severity_cb.pack(side="left")
+        self.volcanism_severity_cb.configure(font=("Courier New", 10, "bold"))
+        self.volcanism_severity_cb.configure(style="TCombobox")
+
+        ttk.Label(row2, text="Type:").pack(side="left", padx=(8, 8))
+        volcanism_types = ["Any"] + sorted({component[1] for species in SPECIES_DB for component in species.get("volcanism_components", []) if component[1]})
+        self.volcanism_type_cb = ttk.Combobox(row2, textvariable=self.volcanism_type_var, values=volcanism_types, state="readonly", width=18)
+        self.volcanism_type_cb.pack(side="left")
+        self.volcanism_type_cb.configure(font=("Courier New", 10, "bold"))
+        self.volcanism_type_cb.configure(style="TCombobox")
 
         init_btn = ttk.Button(telemetry, text="INITIALIZE MATRIX", command=self.calculate_estimate)
         init_btn.pack(pady=(12, 4), fill="x")
@@ -326,12 +504,19 @@ class SpeciesPlannerApp:
         gravity_class = self.gravity_var.get()
         self.signal_count_target = int(self.signal_count_var.get())
 
-        gravity_limit = float(gravity_class) if gravity_class else 1.0
+        gravity_limit = float(gravity_class) if gravity_class and gravity_class != "Any" else None
+        temp_min = _parse_temperature_limit(self.temp_min_var.get())
+        temp_max = _parse_temperature_limit(self.temp_max_var.get())
+        volcanism_severity = self.volcanism_severity_var.get()
+        volcanism_type = self.volcanism_type_var.get()
+
         self.filtered_valid_species = [
             species for species in SPECIES_DB
-            if atmosphere in species["atmospheres"]
+            if self._atmosphere_matches(species["atmospheres"], atmosphere)
             and composition in species["compositions"]
-            and species["max_gravity"] <= gravity_limit
+            and (gravity_limit is None or species["max_gravity"] <= gravity_limit)
+            and self._temperature_matches(species.get("temperature_k"), temp_min, temp_max)
+            and self._volcanism_matches(species, volcanism_severity, volcanism_type)
         ]
 
         self._clear_slot_rows()
@@ -364,6 +549,56 @@ class SpeciesPlannerApp:
             self.slot_value_labels.append(value_label)
 
         self.update_payout_display()
+
+    def _atmosphere_matches(self, atmospheres, selected):
+        if not selected or selected == "Any":
+            return True
+        return selected in atmospheres
+
+    def _temperature_matches(self, temp_range, temp_min, temp_max):
+        if temp_min is None and temp_max is None:
+            return True
+        if not temp_range:
+            return True
+        lo = temp_range.get("min")
+        hi = temp_range.get("max")
+        if lo is None or hi is None:
+            return True
+        if temp_min is not None and hi < temp_min:
+            return False
+        if temp_max is not None and lo > temp_max:
+            return False
+        return True
+
+    def _volcanism_matches(self, species, severity_selected, type_selected):
+        severity_choice = _canonical_volcanism_severity(severity_selected)
+        type_choice = _canonical_volcanism_type(type_selected)
+        components = species.get("volcanism_components", [])
+
+        if severity_choice in {None, "Any"} and type_choice in {None, "Any"}:
+            return True
+
+        if severity_choice == "None":
+            return any(_canonical_volcanism_severity(component[0]) == "None" for component in components)
+
+        if severity_choice in {None, "Any"}:
+            return any(
+                component[1] is not None and _canonical_volcanism_type(component[1]).lower() == type_choice.lower()
+                for component in components
+            )
+
+        if type_choice in {None, "Any"}:
+            return any(
+                _canonical_volcanism_severity(component[0]).lower() == severity_choice.lower()
+                for component in components
+            )
+
+        return any(
+            _canonical_volcanism_severity(component[0]).lower() == severity_choice.lower()
+            and component[1] is not None
+            and _canonical_volcanism_type(component[1]).lower() == type_choice.lower()
+            for component in components
+        )
 
     def update_payout_display(self):
         if not self.is_system_initialized:
@@ -431,9 +666,13 @@ class SpeciesPlannerApp:
         self.filtered_valid_species = []
         self.is_system_initialized = False
         self.signal_count_var.set("3")
-        self.atmos_var.set("Carbon Dioxide")
+        self.atmos_var.set("Any")
         self.composition_var.set("Rocky")
-        self.gravity_var.set(self.gravity_var.get() or "1.0")
+        self.gravity_var.set(self.gravity_var.get() or "Any")
+        self.temp_min_var.set("0")
+        self.temp_max_var.set("1000")
+        self.volcanism_severity_var.set("Any")
+        self.volcanism_type_var.set("Any")
         self.estimate_var.set("System Offline")
         self.advice_box.delete("1.0", tk.END)
         self._fit_text_box(self.advice_box)
